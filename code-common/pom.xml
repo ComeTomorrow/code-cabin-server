@@ -11,6 +11,10 @@
 
     <artifactId>code-common</artifactId>
     <packaging>pom</packaging>
+    <modules>
+        <module>common-redis</module>
+        <module>common-base</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

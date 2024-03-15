@@ -8,7 +8,6 @@
   <packaging>pom</packaging>
   <modules>
     <module>code-common</module>
-    <module>code-common/common-base</module>
   </modules>
 
   <parent>
