@@ -6,8 +6,10 @@
   <artifactId>code-cabin</artifactId>
   <version>1.0.0</version>
   <packaging>pom</packaging>
+
   <modules>
     <module>code-common</module>
+    <module>code-backend</module>
   </modules>
 
   <parent>
@@ -42,6 +44,7 @@
 
   <dependencyManagement>
     <dependencies>
+      <!-- SpringCloud 微服务 -->
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-dependencies</artifactId>
@@ -49,6 +52,7 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <!-- SpringCloud Alibaba 微服务 -->
       <dependency>
         <groupId>com.alibaba.cloud</groupId>
         <artifactId>spring-cloud-alibaba-dependencies</artifactId>
@@ -56,22 +60,25 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-
+      <!-- SpringBoot 依赖配置 -->
       <dependency>
         <groupId>org.mariadb.jdbc</groupId>
         <artifactId>mariadb-java-client</artifactId>
         <version>${mariadb.version}</version>
       </dependency>
+      <!-- Druid 数据库连接池 -->
       <dependency>
         <groupId>com.alibaba</groupId>
         <artifactId>druid-spring-boot-starter</artifactId>
         <version>${druid.version}</version>
       </dependency>
+      <!-- mybatis -->
       <dependency>
         <groupId>com.baomidou</groupId>
         <artifactId>mybatis-plus-boot-starter</artifactId>
         <version>${mybatis-plus.version}</version>
       </dependency>
+      <!-- hutool 工具包 -->
       <dependency>
         <groupId>cn.hutool</groupId>
         <artifactId>hutool-bom</artifactId>
