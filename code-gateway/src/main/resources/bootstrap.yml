@@ -1,0 +1,49 @@
+server:
+  port: 80
+
+# 微服务配置
+spring:
+  ## 应用模块配置
+  application:
+    ### 应用名称
+    name: gateway
+  profiles:
+    ### 环境配置
+    active: dev
+  ## cloud配置
+  cloud:
+    ### nacos注册中心配置
+    nacos:
+      discovery:
+        # 服务注册地址
+        server-addr: 127.0.0.1:8848
+        # 命名空间
+        namespace: e0f6e633-a4a7-4d0b-85ee-7057f147d89a
+      config:
+        # 配置中心地址
+        server-addr: 127.0.0.1:8848
+        # 配置文件格式
+        file-extension: yml
+        # 共享配置
+#        shared-configs:
+#          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+    ### 网关配置
+    gateway:
+      discovery:
+        locator:
+          #开启以服务id去注册中心上获取转发地址
+          enabled: true
+      #### 路由策略
+      routes:
+      #### 路由id
+        - id: provider
+          ## 根据我们的服务名称查找地址是实现调用
+          #          uri: https://www.baidu.com/
+          # 修改uri 由于我们是从服务注册中心拿的服务名，所以可能是一个集群，所以用lb
+          uri: lb://provider/
+          # 配置以下过滤，不然报错
+          filters:
+            - StripPrefix=1
+          ###匹配规则
+          predicates:
+            - Path=/provider/**
