@@ -9,6 +9,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * 网关启动程序
  *
  * @author ComeTomorrow
+ * @since 2024/3/24
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
 @EnableDiscoveryClient  //开启注册中心
@@ -18,10 +19,12 @@ public class GatewayApplication {
         System.out.println(
                 """
                         ================  网关模块启动成功（￣︶￣）↗  ================ \s
-                          ___    __   ____  ____  _    _    __   _  _\s
-                         / __)  /__\\ (_  _)( ___)( \\/\\/ )  /__\\ ( \\/ )
-                        ( (_ \\ /(__)\\  )(   )__)  )    (  /(__)\\ \\  /\s
-                         \\___/(__)(__)(__) (____)(__/\\__)(__)(__)(__)\s
+                                       __                              \s
+                           _________ _/  |_  ______  _  _______  ___.__.
+                          / ___\\__  \\\\   __\\/ __ \\ \\/ \\/ /\\__  \\<   |  |
+                         / /_/  > __ \\|  | \\  ___/\\     /  / __ \\\\___  |
+                         \\___  (____  /__|  \\___  >\\/\\_/  (____  / ____|
+                        /_____/     \\/          \\/             \\/\\/    \s
                         ========================================================== \s
                         """
         );

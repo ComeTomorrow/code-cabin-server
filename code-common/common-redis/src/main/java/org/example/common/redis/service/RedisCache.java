@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
  * spring redis 工具类
  * 
  * @author ComeTomorrow
+ * @serial 2024/3/21
  **/
 @SuppressWarnings(value = { "unchecked", "rawtypes" })
 @Component
@@ -25,7 +26,7 @@ public class RedisCache
     /**
      * 缓存基本的对象，Integer、String、实体类等
      *
-     * @param key 缓存的键值
+     * @param key 缓存键
      * @param value 缓存的值
      */
     public <T> void setCacheObject(final String key, final T value)
@@ -36,12 +37,12 @@ public class RedisCache
     /**
      * 缓存基本的对象，Integer、String、实体类等
      *
-     * @param key 缓存的键值
+     * @param key 缓存键
      * @param value 缓存的值
      * @param timeout 时间
      * @param timeUnit 时间颗粒度
      */
-    public <T> void setCacheObject(final String key, final T value, final Long timeout, final TimeUnit timeUnit)
+    public <T> void setCacheObject(final String key, final T value, final long timeout, final TimeUnit timeUnit)
     {
         redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
     }
@@ -49,9 +50,9 @@ public class RedisCache
     /**
      * 设置有效时间
      *
-     * @param key Redis键
+     * @param key 缓存键
      * @param timeout 超时时间
-     * @return true=设置成功；false=设置失败
+     * @return  true=设置成功；false=设置失败
      */
     public boolean expire(final String key, final long timeout)
     {
@@ -61,20 +62,20 @@ public class RedisCache
     /**
      * 设置有效时间
      *
-     * @param key Redis键
+     * @param key 缓存键
      * @param timeout 超时时间
      * @param unit 时间单位
      * @return true=设置成功；false=设置失败
      */
     public boolean expire(final String key, final long timeout, final TimeUnit unit)
     {
-        return redisTemplate.expire(key, timeout, unit);
+        return Boolean.TRUE.equals(redisTemplate.expire(key, timeout, unit));
     }
 
     /**
      * 获取有效时间
      *
-     * @param key Redis键
+     * @param key 缓存键
      * @return 有效时间
      */
     public long getExpire(final String key)
@@ -85,10 +86,10 @@ public class RedisCache
     /**
      * 判断 key是否存在
      *
-     * @param key 键
-     * @return true 存在 false不存在
+     * @param key 缓存键
+     * @return Boolean 存在 false不存在
      */
-    public Boolean hasKey(String key)
+    public boolean hasKey(String key)
     {
         return redisTemplate.hasKey(key);
     }
@@ -96,8 +97,8 @@ public class RedisCache
     /**
      * 获得缓存的基本对象。
      *
-     * @param key 缓存键值
-     * @return 缓存键值对应的数据
+     * @param key 缓存键
+     * @return 缓存键对应的数据
      */
     public <T> T getCacheObject(final String key)
     {
@@ -108,7 +109,9 @@ public class RedisCache
     /**
      * 删除单个对象
      *
-     * @param key
+     * @param key 缓存键
+     * @return true表示删除成功，反之删除失败
+     *
      */
     public boolean deleteObject(final String key)
     {
@@ -118,8 +121,8 @@ public class RedisCache
     /**
      * 删除集合对象
      *
-     * @param collection 多个对象
-     * @return
+     * @param collection 多个缓存键的集合
+     * @return true表示删除成功，反之删除失败
      */
     public boolean deleteObject(final Collection collection)
     {
@@ -129,7 +132,7 @@ public class RedisCache
     /**
      * 缓存List数据
      *
-     * @param key 缓存的键值
+     * @param key 缓存键
      * @param dataList 待缓存的List数据
      * @return 缓存的对象
      */
@@ -142,8 +145,8 @@ public class RedisCache
     /**
      * 获得缓存的list对象
      *
-     * @param key 缓存的键值
-     * @return 缓存键值对应的数据
+     * @param key 缓存键
+     * @return 缓存键对应的数据
      */
     public <T> List<T> getCacheList(final String key)
     {
@@ -153,8 +156,8 @@ public class RedisCache
     /**
      * 缓存Set
      *
-     * @param key 缓存键值
-     * @param dataSet 缓存的数据
+     * @param key 缓存键
+     * @param dataSet 缓存set类型的数据
      * @return 缓存数据的对象
      */
     public <T> BoundSetOperations<String, T> setCacheSet(final String key, final Set<T> dataSet)
@@ -171,8 +174,8 @@ public class RedisCache
     /**
      * 获得缓存的set
      *
-     * @param key
-     * @return
+     * @param key 缓存键
+     * @return set类型数据
      */
     public <T> Set<T> getCacheSet(final String key)
     {
@@ -182,8 +185,8 @@ public class RedisCache
     /**
      * 缓存Map
      *
-     * @param key
-     * @param dataMap
+     * @param key 缓存键
+     * @param dataMap 缓存map类型的数据
      */
     public <T> void setCacheMap(final String key, final Map<String, T> dataMap)
     {
@@ -195,8 +198,8 @@ public class RedisCache
     /**
      * 获得缓存的Map
      *
-     * @param key
-     * @return
+     * @param key 缓存键
+     * @return map类型数据
      */
     public <T> Map<String, T> getCacheMap(final String key)
     {
@@ -206,7 +209,7 @@ public class RedisCache
     /**
      * 往Hash中存入数据
      *
-     * @param key Redis键
+     * @param key 缓存键
      * @param hKey Hash键
      * @param value 值
      */
@@ -218,7 +221,7 @@ public class RedisCache
     /**
      * 获取Hash中的数据
      *
-     * @param key Redis键
+     * @param key 缓存键
      * @param hKey Hash键
      * @return Hash中的对象
      */
@@ -231,7 +234,7 @@ public class RedisCache
     /**
      * 获取多个Hash中的数据
      *
-     * @param key Redis键
+     * @param key 缓存键
      * @param hKeys Hash键集合
      * @return Hash对象集合
      */
@@ -243,7 +246,7 @@ public class RedisCache
     /**
      * 删除Hash中的某条数据
      *
-     * @param key Redis键
+     * @param key 缓存键
      * @param hKey Hash键
      * @return 是否成功
      */

@@ -9,15 +9,16 @@
 //
 //@Configuration
 //public class RouterConfig {
-//    @Autowired
-//    private ValidateCodeHandler validateCodeHandler;
+////    @Autowired
+////    private ValidateCodeHandler validateCodeHandler;
 //
 //    @SuppressWarnings("rawtypes")
 //    @Bean
 //    public RouterFunction routerFunction()
 //    {
 //        return RouterFunctions.route(
-//                RequestPredicates.GET("/code").and(RequestPredicates.accept(MediaType.TEXT_PLAIN)),
+//                RequestPredicates.GET("/code")
+//                        .and(RequestPredicates.accept(MediaType.TEXT_PLAIN)),
 //                validateCodeHandler);
 //    }
 //}

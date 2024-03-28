@@ -1,2 +1,2 @@
-com.ruoyi.common.redis.configure.RedisConfig
-com.ruoyi.common.redis.service.RedisCache
+org.example.common.redis.configure.RedisConfig
+org.example.common.redis.service.RedisCache
