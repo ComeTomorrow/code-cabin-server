@@ -2,6 +2,7 @@ package org.example.common.core.result;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import lombok.Data;
+import org.example.common.core.enums.ResultCode;
 
 import java.io.Serializable;
 import java.util.List;
@@ -9,8 +10,8 @@ import java.util.List;
 /**
  * 分页响应结构体
  *
- * @author haoxr
- * @since 2022/2/18 23:29
+ * @author ComeTomorrow
+ * @since 2024/3/29
  */
 @Data
 public class PageResult<T> implements Serializable {

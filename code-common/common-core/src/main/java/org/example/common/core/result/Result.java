@@ -1,14 +1,15 @@
 package org.example.common.core.result;
 
 import lombok.Data;
+import org.example.common.core.enums.ResultCode;
 
 import java.io.Serializable;
 
 /**
  * 统一响应结构体
  *
- * @author haoxr
- * @since 2022/1/30
+ * @author ComeTomorrow
+ * @since 2024/3/29
  **/
 @Data
 public class Result<T> implements Serializable {
@@ -55,7 +56,7 @@ public class Result<T> implements Serializable {
         return result(resultCode.getCode(), msg, null);
     }
 
-    private static <T> Result<T> result(IResultCode resultCode, T data) {
+    public static <T> Result<T> result(IResultCode resultCode, T data) {
         return result(resultCode.getCode(), resultCode.getMsg(), data);
     }
 

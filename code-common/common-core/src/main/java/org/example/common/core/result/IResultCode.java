@@ -1,7 +1,8 @@
 package org.example.common.core.result;
 
 /**
- * @author haoxr
+ * @author ComeTomorrow
+ * @since 2024/3/29
  **/
 public interface IResultCode {
 

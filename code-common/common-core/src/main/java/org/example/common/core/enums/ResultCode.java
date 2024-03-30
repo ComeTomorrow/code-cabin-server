@@ -1,15 +1,16 @@
-package org.example.common.core.result;
+package org.example.common.core.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.example.common.core.result.IResultCode;
 
 import java.io.Serializable;
 
 /**
  * 自定义响应码
  *
- * @author haoxr
- * @since 2020-06-23
+ * @author ComeTomorrow
+ * @since 2024/3/29
  **/
 @AllArgsConstructor
 @NoArgsConstructor

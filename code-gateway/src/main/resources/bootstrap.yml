@@ -7,9 +7,9 @@ spring:
   application:
     ### 应用名称
     name: gateway
-  profiles:
-    ### 环境配置
-    active: dev
+#  profiles:
+#    ### 环境配置
+#    active: dev
   ## cloud配置
   cloud:
     ### nacos注册中心配置

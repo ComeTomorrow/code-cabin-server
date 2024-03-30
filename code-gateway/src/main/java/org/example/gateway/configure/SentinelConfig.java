@@ -2,7 +2,7 @@ package org.example.gateway.configure;
 
 import com.alibaba.csp.sentinel.adapter.gateway.sc.callback.GatewayCallbackManager;
 import jakarta.annotation.PostConstruct;
-import org.example.common.core.result.ResultCode;
+import org.example.common.core.enums.ResultCode;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
