@@ -11,7 +11,7 @@
     <module>code-common</module>
     <module>code-backend</module>
     <module>code-gateway</module>
-      <module>code-authentication</module>
+    <module>code-authentication</module>
   </modules>
 
   <parent>

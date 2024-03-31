@@ -13,8 +13,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>common-redis</module>
         <module>common-core</module>
+        <module>common-redis</module>
     </modules>
 
     <properties>
