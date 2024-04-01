@@ -1,4 +1,4 @@
-﻿package org.example.configure;
+﻿package org.example.authentication.configure;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;

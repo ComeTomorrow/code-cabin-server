@@ -1,0 +1,33 @@
+server:
+  port: 8090
+
+# 微服务配置
+spring:
+  ## 应用模块配置
+  application:
+    ### 应用名称
+    name: backend
+#  profiles:
+#    ### 环境配置
+#    active: dev
+  ## cloud配置
+  cloud:
+    ### nacos注册中心配置
+    nacos:
+      discovery:
+        username: nacos
+        password: nacos
+        # 服务注册地址
+        server-addr: 127.0.0.1:8848
+        # 命名空间
+        namespace: e0f6e633-a4a7-4d0b-85ee-7057f147d89a
+      config:
+        username: nacos
+        password: nacos
+        # 配置中心地址
+        server-addr: 127.0.0.1:8848
+        # 配置文件格式
+        file-extension: yml
+        # 共享配置
+#        shared-configs:
+#          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
