@@ -1,0 +1,2 @@
+org.example.common.security.service.PermissionService
+org.example.common.security.configure.ResourceServerConfig

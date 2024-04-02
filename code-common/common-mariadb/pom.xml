@@ -5,19 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.example</groupId>
-        <artifactId>code-cabin</artifactId>
+        <artifactId>code-common</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>code-common</artifactId>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>common-core</module>
-        <module>common-redis</module>
-        <module>common-security</module>
-        <module>common-mariadb</module>
-    </modules>
+    <artifactId>common-mariadb</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
