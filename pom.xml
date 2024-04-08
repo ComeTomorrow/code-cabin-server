@@ -12,6 +12,7 @@
     <module>code-backend</module>
     <module>code-gateway</module>
     <module>code-authentication</module>
+    <module>cabin-user-serve</module>
   </modules>
 
   <parent>

@@ -1,15 +1,15 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.example</groupId>
-        <artifactId>code-cabin</artifactId>
+        <artifactId>cabin-user-serve</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>code-authentication</artifactId>
+    <artifactId>user-serve-boot</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -18,19 +18,20 @@
     </properties>
 
     <dependencies>
-        <!-- OAuth2 认证服务器-->
+        <!-- 读取配置 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-authorization-server</artifactId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
 
-        <!-- OAuth2 客户端（第三方登录 微信、Gitee、Github、QQ）-->
+        <!-- 单元测试 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
-        <!--Spring Cloud & Alibaba -->
+        <!-- Spring Cloud & Alibaba -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
@@ -49,26 +50,40 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.binarywang</groupId>
-            <artifactId>weixin-java-miniapp</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.example</groupId>
-            <artifactId>common-core</artifactId>
+            <artifactId>user-serve-api</artifactId>
             <version>1.0.0</version>
-            <scope>compile</scope>
         </dependency>
-    </dependencies>
 
+<!--        <dependency>-->
+<!--            <groupId>com.youlai</groupId>-->
+<!--            <artifactId>common-mybatis</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>com.youlai</groupId>-->
+<!--            <artifactId>common-web</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>com.youlai</groupId>-->
+<!--            <artifactId>common-redis</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>com.youlai</groupId>-->
+<!--            <artifactId>common-security</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>com.youlai</groupId>-->
+<!--            <artifactId>common-seata</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>com.youlai</groupId>-->
+<!--            <artifactId>common-apidoc</artifactId>-->
+<!--        </dependency>-->
+
+    </dependencies>
 </project>

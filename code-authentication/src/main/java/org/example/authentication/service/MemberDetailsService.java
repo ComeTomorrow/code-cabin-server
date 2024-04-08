@@ -1,22 +1,24 @@
 package org.example.authentication.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.authentication.model.MemberUser;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
- * 商城会员用户认证服务
+ * 会员用户认证服务
  *
  * @author ComeTomorrow
  * @since 2024/4/2
  */
 @Service
 @RequiredArgsConstructor
-public class UserDetailsService {
+public class MemberDetailsService implements UserDetailsService {
 
     private final MemberFeignClient memberFeignClient;
 
@@ -28,6 +30,7 @@ public class UserDetailsService {
      * @return 用户信息
      */
     public UserDetails loadUserByMobile(String mobile) {
+        MemberUser user
         Result<MemberAuthDTO> result = memberFeignClient.loadUserByMobile(mobile);
 
         MemberAuthDTO memberAuthInfo;
