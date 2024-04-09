@@ -1,7 +1,7 @@
 package org.example.authentication.model;
 
 import lombok.Data;
-import org.example.authentication.lishi.MemberAuthDTO;
+import org.example.cabin.ums.dto.MemberAuthDTO;
 import org.example.common.core.constant.GlobalConstants;
 import org.springframework.security.core.GrantedAuthority;
 

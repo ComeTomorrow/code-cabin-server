@@ -63,9 +63,17 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>common-core</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>user-serve-api</artifactId>
             <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>

@@ -16,7 +16,8 @@
         <module>common-core</module>
         <module>common-redis</module>
         <module>common-security</module>
-        <module>common-mariadb</module>
+        <module>common-mybatis</module>
+        <module>common-web</module>
     </modules>
 
     <properties>
