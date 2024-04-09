@@ -1,4 +1,4 @@
-package org.example.common.mariadb.configure;
+package org.example.common.mybatis.configure;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;

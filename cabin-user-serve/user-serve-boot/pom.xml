@@ -55,15 +55,17 @@
             <version>1.0.0</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.youlai</groupId>-->
-<!--            <artifactId>common-mybatis</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>common-mybatis</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.youlai</groupId>-->
-<!--            <artifactId>common-web</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>common-web</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>com.youlai</groupId>-->
