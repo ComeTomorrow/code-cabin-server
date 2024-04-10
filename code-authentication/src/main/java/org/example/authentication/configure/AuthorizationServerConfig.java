@@ -1,4 +1,4 @@
-﻿//package org.example.authentication.configure;
+//package org.example.authentication.configure;
 //
 //import cn.binarywang.wx.miniapp.api.WxMaService;
 //import lombok.extern.slf4j.Slf4j;

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/app-api/v1/members")
-public class UmsMemberController {
+public class   UmsMemberController {
 
     @Autowired
     private UmsMemberService umsMemberService;
