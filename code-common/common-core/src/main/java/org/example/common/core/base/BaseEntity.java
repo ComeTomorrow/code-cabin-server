@@ -17,6 +17,10 @@ public class BaseEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+//    private String createBy;
+//
+//    private String updateBy;
+
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 

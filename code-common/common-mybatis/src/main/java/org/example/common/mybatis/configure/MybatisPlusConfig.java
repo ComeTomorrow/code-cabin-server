@@ -4,10 +4,13 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.DataPermissionInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandlerRegistry;
+import org.example.common.mybatis.handler.IntegerArrayJsonTypeHandler;
+import org.example.common.mybatis.handler.LongArrayJsonTypeHandler;
+import org.example.common.mybatis.handler.IMetaObjectHandler;
+import org.example.common.mybatis.handler.StringArrayJsonTypeHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -29,7 +32,7 @@ public class MybatisPlusConfig {
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
         //数据权限
-        interceptor.addInnerInterceptor(new DataPermissionInterceptor(new MyDataPermissionHandler()));
+//        interceptor.addInnerInterceptor(new DataPermissionInterceptor(new IDataPermissionHandler()));
         //分页插件
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
 
@@ -53,7 +56,7 @@ public class MybatisPlusConfig {
     @Bean
     public GlobalConfig globalConfig() {
         GlobalConfig globalConfig = new GlobalConfig();
-        globalConfig.setMetaObjectHandler(new MyMetaObjectHandler());
+        globalConfig.setMetaObjectHandler(new IMetaObjectHandler());
         return globalConfig;
     }
 

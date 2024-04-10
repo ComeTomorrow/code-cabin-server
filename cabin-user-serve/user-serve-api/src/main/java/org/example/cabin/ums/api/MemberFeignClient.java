@@ -21,8 +21,8 @@ public interface MemberFeignClient {
      * @param openid
      * @return
      */
-    @GetMapping("/app-api/v1/members/openid/{openid}")
-    Result<MemberAuthDTO> loadUserByOpenId(@PathVariable String openid);
+//    @GetMapping("/app-api/v1/members/openid/{openid}")
+//    Result<MemberAuthDTO> loadUserByOpenId(@PathVariable String openid);
 
     /**
      * 根据手机号获取会员认证信息
