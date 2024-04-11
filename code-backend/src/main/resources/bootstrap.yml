@@ -7,9 +7,16 @@ spring:
   application:
     ### 应用名称
     name: code-backend
-#  profiles:
-#    ### 环境配置
-#    active: dev
+  profiles:
+    ### 环境配置
+    active: dev
+#  security:
+#    oauth2:
+#      authorizationserver:
+#        token-uri: ${gateway.endpoint}/youlai-auth/oauth2/token
+#      resourceserver:
+#        jwt:
+#          jwk-set-uri: ${gateway.endpoint}/youlai-auth/oauth2/jwks
   ## cloud配置
   cloud:
     ### nacos注册中心配置
@@ -26,8 +33,14 @@ spring:
         password: nacos
         # 配置中心地址
         server-addr: 127.0.0.1:8848
+        # 命名空间
+        namespace: e0f6e633-a4a7-4d0b-85ee-7057f147d89a
         # 配置文件格式
         file-extension: yml
+        prefix: ${spring.application.name}-${spring.profiles.active}
         # 共享配置
 #        shared-configs:
 #          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+
+gateway:
+  endpoint: http://localhost:80

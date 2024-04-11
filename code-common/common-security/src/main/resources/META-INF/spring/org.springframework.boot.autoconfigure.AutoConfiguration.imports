@@ -1,2 +1,4 @@
 org.example.common.security.service.PermissionService
 org.example.common.security.configure.ResourceServerConfig
+org.example.common.security.handler.IAccessDeniedHandler
+org.example.common.security.handler.IAuthenticationEntryPoint

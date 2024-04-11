@@ -1,7 +1,5 @@
 package org.example.cabin.ums.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.example.cabin.ums.dto.MemberAuthDTO;
 import org.example.cabin.ums.mapper.UmsMemberMapper;

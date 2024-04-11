@@ -1,6 +1,5 @@
 package org.example.authentication.service;
 
-import lombok.RequiredArgsConstructor;
 import org.example.authentication.model.MemberUser;
 import org.example.cabin.ums.api.MemberFeignClient;
 import org.example.cabin.ums.dto.MemberAuthDTO;

@@ -2,11 +2,11 @@ package org.example.common.security.service;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.common.core.constant.RedisConstants;
+import org.example.common.redis.service.RedisCache;
 import org.example.common.security.util.SecurityUtils;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.PatternMatchUtils;
 
@@ -15,15 +15,15 @@ import java.util.*;
 /**
  * SpringSecurity 权限校验
  *
- * @author haoxr
- * @since 2022/2/22
+ * @author ComeTomorrow
+ * @since 2024/4/11
  */
 @Service("ss")
-@RequiredArgsConstructor
 @Slf4j
 public class PermissionService {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private RedisCache redisCache;
 
     /**
      * 判断当前登录用户是否拥有操作权限
@@ -77,7 +77,7 @@ public class PermissionService {
         Set<String> perms = new HashSet<>();
         // 从缓存中一次性获取所有角色的权限
         Collection<Object> roleCodesAsObjects = new ArrayList<>(roleCodes);
-        List<Object> rolePermsList = redisTemplate.opsForHash().multiGet(RedisConstants.ROLE_PERMS_PREFIX, roleCodesAsObjects);
+        List<Object> rolePermsList = redisCache.getMultiCacheMapValue(RedisConstants.ROLE_PERMS_PREFIX, roleCodesAsObjects);
 
         for (Object rolePermsObj : rolePermsList) {
             if (rolePermsObj instanceof Set) {

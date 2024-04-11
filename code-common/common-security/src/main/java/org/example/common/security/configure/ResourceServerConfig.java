@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.example.common.core.constant.JwtClaimConstants;
+import org.example.common.security.handler.JsonAuthenticationFailureHandler;
+import org.example.common.security.handler.JsonAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -24,6 +25,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
@@ -43,7 +45,6 @@ import java.util.List;
 public class ResourceServerConfig {
 
     @Autowired
-
     private AccessDeniedHandler accessDeniedHandler;
 
     @Autowired
@@ -56,29 +57,39 @@ public class ResourceServerConfig {
     private List<String> whitelistPaths;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, HandlerMappingIntrospector introspect) throws Exception {
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, HandlerMappingIntrospector introspect) throws Exception {
 
         MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspect);
 
         log.info("whitelist path:{}", JSONUtil.toJsonStr(whitelistPaths));
         http.authorizeHttpRequests((requests) ->
-                    {
-                        //循环白名单路径列表，匹配的路径进行放行
-                        if (CollectionUtil.isNotEmpty(whitelistPaths)) {
-                            for (String whitelistPath : whitelistPaths) {
-                                requests.requestMatchers(mvcMatcherBuilder.pattern(whitelistPath)).permitAll();
-                            }
+                {
+                    if (CollectionUtil.isNotEmpty(whitelistPaths)) {
+                        for (String whitelistPath : whitelistPaths) {
+                            requests.requestMatchers(mvcMatcherBuilder.pattern(whitelistPath)).permitAll();
                         }
-                        //不在白名单范围的请求需要认证
-                        requests.anyRequest().authenticated();
                     }
-                ).csrf(AbstractHttpConfigurer::disable);
-        http.oauth2ResourceServer(resourceServerConfigurator ->
-                resourceServerConfigurator
-                        .jwt(jwtConfigurer -> jwtAuthenticationConverter())
-                        .authenticationEntryPoint(authenticationEntryPoint)
-                        .accessDeniedHandler(accessDeniedHandler)
+                    requests.anyRequest().authenticated();
+                }
+        ).csrf(AbstractHttpConfigurer::disable);
+
+//        http.oauth2ResourceServer(resourceServerConfigurator ->
+//                resourceServerConfigurator
+//                        .jwt(jwtConfigurator -> jwtAuthenticationConverter())
+//                        .authenticationEntryPoint(authenticationEntryPoint)
+//                        .accessDeniedHandler(accessDeniedHandler)
+//        );
+
+        http.formLogin(formLogin ->
+                formLogin.successHandler(new JsonAuthenticationSuccessHandler())
+                        .failureHandler(new JsonAuthenticationFailureHandler())
+//                        .loginPage("/mylogin.html")
+//                        .loginProcessingUrl("/login")
+                        .usernameParameter("mobile")
+                        .passwordParameter("password")
+                        .permitAll()
         );
+
         return http.build();
     }
 
@@ -118,6 +129,5 @@ public class ResourceServerConfig {
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         return jwtAuthenticationConverter;
     }
-
 
 }
