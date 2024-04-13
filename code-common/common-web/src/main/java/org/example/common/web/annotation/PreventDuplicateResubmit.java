@@ -6,8 +6,8 @@ import java.lang.annotation.*;
 /**
  * 防重提交注解
  *
- * @author haoxr
- * @since 2023/5/9
+ * @author ComeTomorrow
+ * @since 2024/4/10
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

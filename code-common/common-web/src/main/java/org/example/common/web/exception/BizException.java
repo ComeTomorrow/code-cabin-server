@@ -6,8 +6,8 @@ import org.example.common.core.result.IResultCode;
 /**
  * 自定义业务异常
  *
- * @author haoxr
- * @since 2022/7/31
+ * @author ComeTomorrow
+ * @since 2024/4/10
  */
 @Getter
 public class BizException extends RuntimeException {
