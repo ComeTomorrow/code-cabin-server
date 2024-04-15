@@ -73,6 +73,20 @@
 
         <dependency>
             <groupId>org.example</groupId>
+            <artifactId>common-web</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>common-security</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.example</groupId>
             <artifactId>user-serve-api</artifactId>
             <version>1.0.0</version>
             <scope>compile</scope>

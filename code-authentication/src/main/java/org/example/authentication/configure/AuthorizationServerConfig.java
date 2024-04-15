@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -18,10 +19,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
@@ -40,11 +45,14 @@ public class AuthorizationServerConfig {
     @Autowired
     private MemberUserDetailsService memberUserDetailsService;
 
-    @Setter
-    private List<String> whitelistPaths;
-
     @Bean
-    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity httpSecurity, HandlerMappingIntrospector introspect) throws Exception {
+    public SecurityFilterChain authorizationServerSecurityFilterChain(
+            HttpSecurity httpSecurity,
+            AuthenticationManager authenticationManager,
+            OAuth2AuthorizationService authorizationService,
+            OAuth2TokenGenerator<?> tokenGenerator,
+            HandlerMappingIntrospector introspect) throws Exception {
+        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(httpSecurity);
 
         return httpSecurity.build();
     }

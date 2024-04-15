@@ -35,13 +35,13 @@ public class SecurityUtils {
 //        return null;
 //    }
 //
-//    public static Map<String, Object> getTokenAttributes() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication instanceof JwtAuthenticationToken jwtAuthenticationToken) {
-//            return jwtAuthenticationToken.getTokenAttributes();
-//        }
-//        return null;
-//    }
+    public static Map<String, Object> getTokenAttributes() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof JwtAuthenticationToken jwtAuthenticationToken) {
+            return jwtAuthenticationToken.getTokenAttributes();
+        }
+        return null;
+    }
 
 
     /**
@@ -73,13 +73,13 @@ public class SecurityUtils {
 //        return roles != null && roles.contains(SystemConstants.ROOT_ROLE_CODE);
 //    }
 //
-//    public static String getJti() {
-//        Map<String, Object> tokenAttributes = getTokenAttributes();
-//        if (tokenAttributes != null) {
-//            return String.valueOf(tokenAttributes.get("jti"));
-//        }
-//        return null;
-//    }
+    public static String getJti() {
+        Map<String, Object> tokenAttributes = getTokenAttributes();
+        if (tokenAttributes != null) {
+            return String.valueOf(tokenAttributes.get("jti"));
+        }
+        return null;
+    }
 //
 //
 //    public static Long getExp() {

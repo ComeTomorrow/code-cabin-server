@@ -1,8 +1,12 @@
 package org.example.authentication.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.authentication.service.MemberUserDetailsService;
 import org.example.common.core.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +21,21 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/v1/auth")
+@Slf4j
 public class AuthController {
 
     @Autowired
     private MemberUserDetailsService userDetailsService;
+    
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @GetMapping("/captcha/{mobile}")
-    public Result<UserDetails> loadUserByMobile(@PathVariable("mobile") String mobile) {
+    public Result<UserDetails> login(@PathVariable("mobile") String mobile) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(mobile,"");
+        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
+        authenticate.getPrincipal()
+
         UserDetails userDetails = userDetailsService.loadUserByMobile(mobile);
         return Result.success(userDetails);
     }
