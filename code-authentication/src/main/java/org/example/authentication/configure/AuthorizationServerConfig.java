@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authorization.AuthorizationDecision;
+import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -44,18 +46,13 @@ public class AuthorizationServerConfig {
 
     @Autowired
     private MemberUserDetailsService memberUserDetailsService;
+    
 
-    @Bean
-    public SecurityFilterChain authorizationServerSecurityFilterChain(
-            HttpSecurity httpSecurity,
-            AuthenticationManager authenticationManager,
-            OAuth2AuthorizationService authorizationService,
-            OAuth2TokenGenerator<?> tokenGenerator,
-            HandlerMappingIntrospector introspect) throws Exception {
-        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(httpSecurity);
-
-        return httpSecurity.build();
-    }
+//    @Bean
+//    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
+//
+//        return httpSecurity.build();
+//    }
 
     /**
      * 密码加密器

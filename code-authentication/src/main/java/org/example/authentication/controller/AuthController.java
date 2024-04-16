@@ -27,15 +27,13 @@ public class AuthController {
     @Autowired
     private MemberUserDetailsService userDetailsService;
     
-    @Autowired
-    private AuthenticationManager authenticationManager;
+//    @Autowired
+//    private AuthenticationManager authenticationManager;
 
     @GetMapping("/captcha/{mobile}")
     public Result<UserDetails> login(@PathVariable("mobile") String mobile) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(mobile,"");
-        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-        authenticate.getPrincipal()
-
+//        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(mobile,"");
+//        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         UserDetails userDetails = userDetailsService.loadUserByMobile(mobile);
         return Result.success(userDetails);
     }

@@ -31,4 +31,9 @@ public interface JwtClaimConstants {
      * 会员ID
      */
     String MEMBER_ID = "memberId";
+
+    /**
+     * JWT秘钥
+     */
+    String JWT_KEY = "cxf";
 }

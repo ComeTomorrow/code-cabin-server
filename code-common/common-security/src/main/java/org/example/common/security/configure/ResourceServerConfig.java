@@ -8,6 +8,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.example.common.core.constant.JwtClaimConstants;
 import org.example.common.security.handler.JsonAuthenticationFailureHandler;
 import org.example.common.security.handler.JsonAuthenticationSuccessHandler;
+import org.example.common.security.handler.JwtTokenAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -81,7 +82,7 @@ public class ResourceServerConfig {
 //        );
 
         http.formLogin(formLogin ->
-                formLogin.successHandler(new JsonAuthenticationSuccessHandler())
+                formLogin.successHandler(new JwtTokenAuthenticationSuccessHandler())
                         .failureHandler(new JsonAuthenticationFailureHandler())
 //                        .loginPage("/mylogin.html")
 //                        .loginProcessingUrl("/login")
