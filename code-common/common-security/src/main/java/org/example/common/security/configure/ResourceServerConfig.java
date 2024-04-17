@@ -6,9 +6,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.example.common.core.constant.JwtClaimConstants;
-import org.example.common.security.handler.JsonAuthenticationFailureHandler;
-import org.example.common.security.handler.JsonAuthenticationSuccessHandler;
-import org.example.common.security.handler.JwtTokenAuthenticationSuccessHandler;
+import org.example.common.security.handler.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -80,9 +78,15 @@ public class ResourceServerConfig {
 //                        .authenticationEntryPoint(authenticationEntryPoint)
 //                        .accessDeniedHandler(accessDeniedHandler)
 //        );
+        // 异常配置
+        http.exceptionHandling(exception ->
+                exception.authenticationEntryPoint(new JsonAuthenticationEntryPoint())  //认证入口，未认证异常
+                        .accessDeniedHandler(new JsonAccessDeniedHandler())     //权限不足
+        );
 
+        // 开启表单登录
         http.formLogin(formLogin ->
-                formLogin.successHandler(new JwtTokenAuthenticationSuccessHandler())
+                formLogin.successHandler(new JsonAuthenticationSuccessHandler())
                         .failureHandler(new JsonAuthenticationFailureHandler())
 //                        .loginPage("/mylogin.html")
 //                        .loginProcessingUrl("/login")
@@ -90,6 +94,8 @@ public class ResourceServerConfig {
                         .passwordParameter("password")
                         .permitAll()
         );
+        // 注销登录
+        http.logout(logout -> logout.logoutSuccessHandler(new JsonLogoutSuccessHandler()));
 
         return http.build();
     }
