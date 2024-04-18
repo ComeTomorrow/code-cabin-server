@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2024/4/9
  */
 @FeignClient(name = "cabin-user-serve", contextId = "member")
-public interface MemberFeignClient {
+public interface MemberUserFeignClient {
 
     /**
      * 根据openId获取会员认证信息

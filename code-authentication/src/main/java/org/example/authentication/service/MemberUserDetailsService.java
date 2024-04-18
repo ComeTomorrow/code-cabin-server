@@ -1,7 +1,7 @@
 package org.example.authentication.service;
 
-import org.example.authentication.model.MemberUser;
-import org.example.cabin.ums.api.MemberFeignClient;
+import org.example.authentication.model.MemberUserDetails;
+import org.example.cabin.ums.api.MemberUserFeignClient;
 import org.example.cabin.ums.dto.MemberAuthDTO;
 import org.example.common.core.enums.ResultCode;
 import org.example.common.core.result.Result;
@@ -10,7 +10,9 @@ import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,16 +22,16 @@ import org.springframework.stereotype.Service;
  * @since 2024/4/2
  */
 @Service
-public class MemberUserDetailsService {
+public class MemberUserDetailsService implements UserDetailsManager, UserDetailsPasswordService {
 
     @Autowired
-    private MemberFeignClient memberFeignClient;
+    private MemberUserFeignClient memberFeignClient;
 
     /**
      * 手机号码认证方式
      *
      * @param mobile 手机号
-     * @return 用户信息 {@link MemberUser}
+     * @return 用户信息 {@link MemberUserDetails}
      */
     public UserDetails loadUserByMobile(String mobile) {
         Result<MemberAuthDTO> result = memberFeignClient.loadUserByMobile(mobile);
@@ -38,7 +40,62 @@ public class MemberUserDetailsService {
         if (!(Result.isSuccess(result) && (memberAuthInfo = result.getData()) != null)) {
             throw new UsernameNotFoundException(ResultCode.USER_NOT_EXIST.getMsg());
         }
-        MemberUser userDetails = new MemberUser(memberAuthInfo);
+        MemberUserDetails userDetails = new MemberUserDetails(memberAuthInfo);
+        if (!userDetails.isEnabled()) {
+            throw new DisabledException("该账户已被禁用!");
+        } else if (!userDetails.isAccountNonLocked()) {
+            throw new LockedException("该账号已被锁定!");
+        } else if (!userDetails.isAccountNonExpired()) {
+            throw new AccountExpiredException("该账号已过期!");
+        }
+        return userDetails;
+    }
+
+    @Override
+    public UserDetails updatePassword(UserDetails user, String newPassword) {
+        return null;
+    }
+
+    @Override
+    public void createUser(UserDetails user) {
+
+    }
+
+    @Override
+    public void updateUser(UserDetails user) {
+
+    }
+
+    @Override
+    public void deleteUser(String username) {
+
+    }
+
+    @Override
+    public void changePassword(String oldPassword, String newPassword) {
+
+    }
+
+    @Override
+    public boolean userExists(String username) {
+        return false;
+    }
+
+    /**
+     * 从数据库中获取用户信息
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException
+     */
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Result<MemberAuthDTO> result = memberFeignClient.loadUserByMobile(username);
+
+        MemberAuthDTO memberAuthInfo;
+        if (!(Result.isSuccess(result) && (memberAuthInfo = result.getData()) != null)) {
+            throw new UsernameNotFoundException(ResultCode.USER_NOT_EXIST.getMsg());
+        }
+        MemberUserDetails userDetails = new MemberUserDetails(memberAuthInfo);
         if (!userDetails.isEnabled()) {
             throw new DisabledException("该账户已被禁用!");
         } else if (!userDetails.isAccountNonLocked()) {
@@ -53,7 +110,7 @@ public class MemberUserDetailsService {
      * 根据用户名获取用户信息
      *
      * @param openid  微信公众平台唯一身份标识
-     * @return 用户信息 {@link MemberUser}
+     * @return 用户信息 {@link MemberUserDetails}
      */
 //    public UserDetails loadUserByOpenid(String openid) {
 //        // 根据 openid 获取微信用户认证信息

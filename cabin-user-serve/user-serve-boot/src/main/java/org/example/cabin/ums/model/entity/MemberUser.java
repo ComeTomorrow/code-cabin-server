@@ -1,21 +1,19 @@
 package org.example.cabin.ums.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 import org.example.common.core.base.BaseEntity;
 
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * @author ComeTomorrow
  * @since 2024/4/10
  */
 @Data
-public class UmsMember extends BaseEntity {
+public class MemberUser extends BaseEntity {
 
     @TableId(type = IdType.AUTO)
     private Long id;
@@ -25,6 +23,8 @@ public class UmsMember extends BaseEntity {
     private String nickName;
 
     private String mobile;
+
+    private String password;
 
     private LocalDate birthday;
 

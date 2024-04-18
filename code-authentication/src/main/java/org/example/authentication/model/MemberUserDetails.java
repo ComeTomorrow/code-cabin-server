@@ -17,7 +17,7 @@ import java.util.Collections;
  * @since 2024/4/8
  */
 @Data
-public class MemberUser implements UserDetails, CredentialsContainer {
+public class MemberUserDetails implements UserDetails, CredentialsContainer {
     /**
      * 会员ID
      */
@@ -49,7 +49,7 @@ public class MemberUser implements UserDetails, CredentialsContainer {
      *
      * @param memberAuthInfo 会员认证信息
      */
-    public MemberUser(MemberAuthDTO memberAuthInfo) {
+    public MemberUserDetails(MemberAuthDTO memberAuthInfo) {
         this.setId(memberAuthInfo.getId());
         this.setUsername(memberAuthInfo.getUsername());
         this.setPassword(memberAuthInfo.getPassword());

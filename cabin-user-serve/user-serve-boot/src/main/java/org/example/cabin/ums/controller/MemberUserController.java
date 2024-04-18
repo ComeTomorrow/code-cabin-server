@@ -1,19 +1,17 @@
 package org.example.cabin.ums.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.example.cabin.ums.dto.MemberAuthDTO;
-import org.example.cabin.ums.model.entity.UmsMember;
-import org.example.cabin.ums.service.UmsMemberService;
+import org.example.cabin.ums.service.MemberUserService;
 import org.example.common.core.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/app-api/v1/members")
-public class   UmsMemberController {
+public class MemberUserController {
 
     @Autowired
-    private UmsMemberService umsMemberService;
+    private MemberUserService umsMemberService;
 
 //    @Operation(summary= "根据会员ID获取openid")
 //    @GetMapping("/{memberId}/openid")
@@ -35,8 +33,8 @@ public class   UmsMemberController {
 
 //    @Operation(summary= "获取登录会员信息")
 //    @GetMapping("/me")
-//    public Result<MemberVO> getCurrMemberInfo() {
-//        MemberVO memberVO = umsMemberService.getCurrMemberInfo();
+//    public Result<MemberUserVO> getCurrMemberInfo() {
+//        MemberUserVO memberVO = umsMemberService.getCurrMemberInfo();
 //        return Result.success(memberVO);
 //    }
 
@@ -77,7 +75,7 @@ public class   UmsMemberController {
     @GetMapping("/mobile/{mobile}")
     public Result<MemberAuthDTO> getMemberByMobile(@PathVariable String mobile)
     {
-        MemberAuthDTO memberAuthInfo = umsMemberService.getMemberByMobile(mobile);
+        MemberAuthDTO memberAuthInfo = umsMemberService.getMemberUserByMobile(mobile);
         return Result.success(memberAuthInfo);
     }
 

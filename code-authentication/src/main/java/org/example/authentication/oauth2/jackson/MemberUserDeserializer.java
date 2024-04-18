@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.MissingNode;
-import org.example.authentication.model.MemberUser;
+import org.example.authentication.model.MemberUserDetails;
 import org.example.cabin.ums.dto.MemberAuthDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,7 +24,7 @@ import java.util.Set;
  * @see SysUserMixin
  * @since 4.2
  */
-public class MemberUserDeserializer extends JsonDeserializer<MemberUser> {
+public class MemberUserDeserializer extends JsonDeserializer<MemberUserDetails> {
 
     private static final TypeReference<Set<SimpleGrantedAuthority>> SIMPLE_GRANTED_AUTHORITY_SET = new TypeReference<Set<SimpleGrantedAuthority>>() {
     };
@@ -41,7 +41,7 @@ public class MemberUserDeserializer extends JsonDeserializer<MemberUser> {
      * @throws IOException if a exception during IO occurs
      */
     @Override
-    public MemberUser deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
+    public MemberUserDetails deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         ObjectMapper mapper = (ObjectMapper) jp.getCodec();
         JsonNode jsonNode = mapper.readTree(jp);
         Set<? extends GrantedAuthority> authorities = mapper.convertValue(jsonNode.get("authorities"),
@@ -61,7 +61,7 @@ public class MemberUserDeserializer extends JsonDeserializer<MemberUser> {
         memberAuthInfo.setUsername(username);
         memberAuthInfo.setPassword(password);
         memberAuthInfo.setStatus(0);
-        MemberUser result = new MemberUser(memberAuthInfo);
+        MemberUserDetails result = new MemberUserDetails(memberAuthInfo);
         if (passwordNode.asText(null) == null) {
             result.eraseCredentials();
         }

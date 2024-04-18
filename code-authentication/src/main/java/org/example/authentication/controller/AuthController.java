@@ -1,10 +1,12 @@
 package org.example.authentication.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.authentication.model.MemberUserDetails;
 import org.example.authentication.service.MemberUserDetailsService;
 import org.example.common.core.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,15 +28,15 @@ public class AuthController {
 
     @Autowired
     private MemberUserDetailsService userDetailsService;
-    
-//    @Autowired
-//    private AuthenticationManager authenticationManager;
 
-    @GetMapping("/login")
-    public Result<UserDetails> login(@PathVariable("mobile") String mobile) {
-//        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(mobile,"");
-//        Authentication authenticate = authenticationManager.authenticate(authenticationToken);
-        UserDetails userDetails = userDetailsService.loadUserByMobile(mobile);
+    @Autowired
+    private AuthenticationProvider authenticationProvider;
+
+    @PostMapping("/login")
+    public Result<UserDetails> login(@RequestBody MemberUserDetails loginUser) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser.getUsername(),loginUser.getPassword());
+        Authentication authenticate = authenticationProvider.authenticate(authenticationToken);
+        UserDetails userDetails = userDetailsService.loadUserByMobile(loginUser.getUsername());
         return Result.success(userDetails);
     }
 

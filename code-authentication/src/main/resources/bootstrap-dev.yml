@@ -2,6 +2,12 @@ server:
   port: 9000
 
 spring:
+  data:
+    redis:
+      database: 0
+      host: 192.168.133.129
+      port: 6379
+      password: redis123456
   mvc:
     path-match:
       matching-strategy: ant_path_matcher

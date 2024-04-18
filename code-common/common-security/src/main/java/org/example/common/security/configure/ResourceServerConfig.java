@@ -84,19 +84,6 @@ public class ResourceServerConfig {
                         .accessDeniedHandler(new JsonAccessDeniedHandler())     //权限不足
         );
 
-        // 开启表单登录
-        http.formLogin(formLogin ->
-                formLogin.successHandler(new JsonAuthenticationSuccessHandler())
-                        .failureHandler(new JsonAuthenticationFailureHandler())
-//                        .loginPage("/mylogin.html")
-//                        .loginProcessingUrl("/login")
-                        .usernameParameter("mobile")
-                        .passwordParameter("password")
-                        .permitAll()
-        );
-        // 注销登录
-        http.logout(logout -> logout.logoutSuccessHandler(new JsonLogoutSuccessHandler()));
-
         return http.build();
     }
 
@@ -107,6 +94,7 @@ public class ResourceServerConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers(
+                AntPathRequestMatcher.antMatcher("/api/**"),
                 AntPathRequestMatcher.antMatcher("/webjars/**"),
                 AntPathRequestMatcher.antMatcher("/doc.html"),
                 AntPathRequestMatcher.antMatcher("/swagger-resources/**"),

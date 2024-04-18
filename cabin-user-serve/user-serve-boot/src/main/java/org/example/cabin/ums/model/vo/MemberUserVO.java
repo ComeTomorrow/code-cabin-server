@@ -10,7 +10,7 @@ import lombok.Data;
  */
 //@Schema(description = "会员视图层对象")
 @Data
-public class MemberVO {
+public class MemberUserVO {
 
 //    @Schema(description="会员ID")
     private Long id;

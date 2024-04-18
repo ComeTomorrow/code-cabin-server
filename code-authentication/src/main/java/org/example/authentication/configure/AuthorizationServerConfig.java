@@ -5,17 +5,28 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.json.JSONUtil;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.example.authentication.model.MemberUserDetails;
 import org.example.authentication.service.MemberUserDetailsService;
+import org.example.common.security.handler.JsonAuthenticationFailureHandler;
+import org.example.common.security.handler.JsonAuthenticationSuccessHandler;
+import org.example.common.security.handler.JsonLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.AuthorizationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -36,6 +47,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
@@ -45,7 +57,7 @@ public class AuthorizationServerConfig {
 //    private WxMaService wxMaService;
 
     @Autowired
-    private MemberUserDetailsService memberUserDetailsService;
+    private MemberUserDetailsService userDetailsService;
     
 
     @Bean
@@ -54,10 +66,18 @@ public class AuthorizationServerConfig {
                 authorize -> authorize.requestMatchers("/auth/login").permitAll()
                         .anyRequest().authenticated()
         );
+
+        // 开启表单登录
+        httpSecurity.formLogin(
+                formLogin -> formLogin.loginProcessingUrl("//auth/login")     //指定登录接口
+                        .successHandler(new JsonAuthenticationSuccessHandler())
+                        .failureHandler(new JsonAuthenticationFailureHandler())
+        );
+
+        httpSecurity.csrf(Customizer.withDefaults());
+        httpSecurity.cors(Customizer.withDefaults());
         return httpSecurity.build();
     }
-
-
 
     /**
      * 密码加密器
@@ -67,6 +87,30 @@ public class AuthorizationServerConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        return new AuthenticationProvider() {
+            @Override
+            public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+                //从Authentication对象中获取用户名和身份凭证信息
+                String username = authentication.getName();
+                String password = authentication.getCredentials().toString();
+                UserDetails loginUser = userDetailsService.loadUserByUsername(username);
+                if (Objects.isNull(loginUser) || !passwordEncoder().matches(password, loginUser.getPassword())){
+                    //密码匹配失败抛出异常
+                    log.error("拒绝访问，用户名或密码错误");
+                    throw new BadCredentialsException("拒绝访问，用户名或密码错误");
+                }
+                log.info("访问成功："+loginUser);
+                return new UsernamePasswordAuthenticationToken(loginUser, password, loginUser.getAuthorities());
+            }
+
+            @Override
+            public boolean supports(Class<?> authentication) {
+                return authentication.equals(UsernamePasswordAuthenticationToken.class);
+            }
+        };
+    }
 
     /**
      * 初始化创建商城管理客户端
