@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2024/4/10
  */
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/auth")
 @Slf4j
 public class AuthController {
 
@@ -30,7 +30,7 @@ public class AuthController {
 //    @Autowired
 //    private AuthenticationManager authenticationManager;
 
-    @GetMapping("/captcha/{mobile}")
+    @GetMapping("/login")
     public Result<UserDetails> login(@PathVariable("mobile") String mobile) {
 //        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(mobile,"");
 //        Authentication authenticate = authenticationManager.authenticate(authenticationToken);

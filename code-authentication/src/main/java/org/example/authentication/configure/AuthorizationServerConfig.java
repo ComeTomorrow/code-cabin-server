@@ -48,11 +48,16 @@ public class AuthorizationServerConfig {
     private MemberUserDetailsService memberUserDetailsService;
     
 
-//    @Bean
-//    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
-//
-//        return httpSecurity.build();
-//    }
+    @Bean
+    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.authorizeHttpRequests(
+                authorize -> authorize.requestMatchers("/auth/login").permitAll()
+                        .anyRequest().authenticated()
+        );
+        return httpSecurity.build();
+    }
+
+
 
     /**
      * 密码加密器

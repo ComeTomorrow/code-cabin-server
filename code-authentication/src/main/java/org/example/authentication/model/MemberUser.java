@@ -3,7 +3,9 @@ package org.example.authentication.model;
 import lombok.Data;
 import org.example.cabin.ums.dto.MemberAuthDTO;
 import org.example.common.core.constant.GlobalConstants;
+import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -15,7 +17,7 @@ import java.util.Collections;
  * @since 2024/4/8
  */
 @Data
-public class MemberUser implements MemberUserDetails{
+public class MemberUser implements UserDetails, CredentialsContainer {
     /**
      * 会员ID
      */
@@ -25,6 +27,11 @@ public class MemberUser implements MemberUserDetails{
      * 会员用户名(openid/mobile)
      */
     private String username;
+
+    /**
+     * 会员密码
+     */
+    private String password;
 
     /**
      * 会员状态
@@ -40,12 +47,13 @@ public class MemberUser implements MemberUserDetails{
     /**
      * 会员信息构造
      *
-     * @param memAuthInfo 会员认证信息
+     * @param memberAuthInfo 会员认证信息
      */
-    public MemberUser(MemberAuthDTO memAuthInfo) {
-        this.setId(memAuthInfo.getId());
-        this.setUsername(memAuthInfo.getUsername());
-        this.setEnabled(GlobalConstants.STATUS_YES.equals(memAuthInfo.getStatus()));
+    public MemberUser(MemberAuthDTO memberAuthInfo) {
+        this.setId(memberAuthInfo.getId());
+        this.setUsername(memberAuthInfo.getUsername());
+        this.setPassword(memberAuthInfo.getPassword());
+        this.setEnabled(GlobalConstants.STATUS_YES.equals(memberAuthInfo.getStatus()));
     }
 
     @Override
@@ -81,5 +89,10 @@ public class MemberUser implements MemberUserDetails{
     @Override
     public boolean isEnabled() {
         return this.enabled;
+    }
+
+    @Override
+    public void eraseCredentials() {
+        this.password = null;
     }
 }
