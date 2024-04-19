@@ -7,9 +7,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.example.authentication.model.MemberUserDetails;
 import org.example.authentication.service.MemberUserDetailsService;
-import org.example.common.security.handler.JsonAuthenticationFailureHandler;
-import org.example.common.security.handler.JsonAuthenticationSuccessHandler;
-import org.example.common.security.handler.JsonLogoutSuccessHandler;
+import org.example.common.security.handler.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,9 +22,11 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -40,6 +40,7 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
@@ -52,29 +53,42 @@ import java.util.UUID;
 
 @Slf4j
 @Configuration
+@EnableWebSecurity
 public class AuthorizationServerConfig {
 //    @Autowired
 //    private WxMaService wxMaService;
 
     @Autowired
     private MemberUserDetailsService userDetailsService;
+
+    @Autowired
+    private JsonAuthenticationEntryPoint authenticationEntryPoint;
+
+    @Autowired
+    private JsonAccessDeniedHandler accessDeniedHandler;
     
 
     @Bean
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        // 不使用session存储信息
+        httpSecurity.sessionManagement(session->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        );
+
+        // 前后端分离，使用自定义的token
+        httpSecurity.csrf(csrf->csrf.disable());
+
+        // 配置异常捕获
+
+        // 开启表单登录
+        httpSecurity.exceptionHandling(
+                exception -> exception.authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler)
+        );
+
         httpSecurity.authorizeHttpRequests(
                 authorize -> authorize.requestMatchers("/auth/login").permitAll()
                         .anyRequest().authenticated()
         );
-
-        // 开启表单登录
-        httpSecurity.formLogin(
-                formLogin -> formLogin.loginProcessingUrl("//auth/login")     //指定登录接口
-                        .successHandler(new JsonAuthenticationSuccessHandler())
-                        .failureHandler(new JsonAuthenticationFailureHandler())
-        );
-
-        httpSecurity.csrf(Customizer.withDefaults());
         httpSecurity.cors(Customizer.withDefaults());
         return httpSecurity.build();
     }

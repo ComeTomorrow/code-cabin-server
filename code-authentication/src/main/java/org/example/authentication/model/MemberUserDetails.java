@@ -1,6 +1,7 @@
 package org.example.authentication.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.example.cabin.ums.dto.MemberAuthDTO;
 import org.example.common.core.constant.GlobalConstants;
 import org.springframework.security.core.CredentialsContainer;
@@ -17,6 +18,7 @@ import java.util.Collections;
  * @since 2024/4/8
  */
 @Data
+@NoArgsConstructor
 public class MemberUserDetails implements UserDetails, CredentialsContainer {
     /**
      * 会员ID
@@ -63,7 +65,7 @@ public class MemberUserDetails implements UserDetails, CredentialsContainer {
 
     @Override
     public String getPassword() {
-        return null;
+        return this.password;
     }
 
     @Override

@@ -12,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 /**
  * 认证控制器
  * <p>
@@ -22,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2024/4/10
  */
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @Slf4j
 public class AuthController {
 
@@ -36,6 +38,9 @@ public class AuthController {
     public Result<UserDetails> login(@RequestBody MemberUserDetails loginUser) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser.getUsername(),loginUser.getPassword());
         Authentication authenticate = authenticationProvider.authenticate(authenticationToken);
+        if (Objects.isNull(authenticate)){
+            throw new RuntimeException("erreo");
+        }
         UserDetails userDetails = userDetailsService.loadUserByMobile(loginUser.getUsername());
         return Result.success(userDetails);
     }
