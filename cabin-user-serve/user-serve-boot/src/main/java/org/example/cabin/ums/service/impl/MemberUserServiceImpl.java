@@ -27,7 +27,7 @@ public class MemberUserServiceImpl implements MemberUserService {
         MemberUser user = memberMapper.selectOne(
                 Wrappers.lambdaQuery(MemberUser.class)
                         .eq(MemberUser::getMobile, mobile)
-                        .select(MemberUser::getId, MemberUser::getMobile, MemberUser::getStatus)
+                        .select(MemberUser::getId, MemberUser::getMobile, MemberUser::getStatus, MemberUser::getPassword)
         );
 
         if (user == null) {
@@ -36,7 +36,9 @@ public class MemberUserServiceImpl implements MemberUserService {
 
         MemberAuthDTO authDTO = new MemberAuthDTO();
         authDTO.setId(user.getId());
+        authDTO.setUsername(user.getMobile());
         authDTO.setStatus(user.getStatus());
+        authDTO.setPassword(user.getPassword());
         return authDTO;
     }
 }

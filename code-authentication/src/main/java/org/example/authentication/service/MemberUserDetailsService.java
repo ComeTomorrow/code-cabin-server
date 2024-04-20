@@ -27,30 +27,6 @@ public class MemberUserDetailsService implements UserDetailsManager, UserDetails
     @Autowired
     private MemberUserFeignClient memberFeignClient;
 
-    /**
-     * 手机号码认证方式
-     *
-     * @param mobile 手机号
-     * @return 用户信息 {@link MemberUserDetails}
-     */
-    public UserDetails loadUserByMobile(String mobile) {
-        Result<MemberAuthDTO> result = memberFeignClient.loadUserByMobile(mobile);
-
-        MemberAuthDTO memberAuthInfo;
-        if (!(Result.isSuccess(result) && (memberAuthInfo = result.getData()) != null)) {
-            throw new UsernameNotFoundException(ResultCode.USER_NOT_EXIST.getMsg());
-        }
-        MemberUserDetails userDetails = new MemberUserDetails(memberAuthInfo);
-        if (!userDetails.isEnabled()) {
-            throw new DisabledException("该账户已被禁用!");
-        } else if (!userDetails.isAccountNonLocked()) {
-            throw new LockedException("该账号已被锁定!");
-        } else if (!userDetails.isAccountNonExpired()) {
-            throw new AccountExpiredException("该账号已过期!");
-        }
-        return userDetails;
-    }
-
     @Override
     public UserDetails updatePassword(UserDetails user, String newPassword) {
         return null;

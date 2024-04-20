@@ -3,6 +3,3 @@ spring:
     name: code-authentication
   profiles:
     active: dev
-security:
-  whitelist-paths:
-    - /auth/login

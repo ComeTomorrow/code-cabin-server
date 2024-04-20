@@ -5,12 +5,6 @@ spring:
   mvc:
     path-match:
       matching-strategy: ant_path_matcher
-  data:
-    redis:
-      database: 0
-      host: 192.168.133.129
-      port: 6379
-      password: redis123456
   cloud:
     nacos:
       # 注册中心
@@ -18,7 +12,7 @@ spring:
         username: nacos
         password: nacos
         # 服务注册地址
-        server-addr: 127.0.0.1:8848
+        server-addr: http://localhost:8848
         # 命名空间
         namespace: e0f6e633-a4a7-4d0b-85ee-7057f147d89a
       # 配置中心
@@ -26,9 +20,12 @@ spring:
         username: nacos
         password: nacos
         # 配置中心地址
-        server-addr: 127.0.0.1:8848
+        server-addr: http://localhost:8848
         # 命名空间
         namespace: e0f6e633-a4a7-4d0b-85ee-7057f147d89a
         # 配置文件格式
         file-extension: yaml
         prefix: ${spring.application.name}-${spring.profiles.active}
+        shared-configs:
+          - data-id: cabin-common-dev.yaml
+            refresh: true

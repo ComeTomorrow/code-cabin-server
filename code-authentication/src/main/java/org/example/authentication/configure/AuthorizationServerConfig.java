@@ -79,8 +79,6 @@ public class AuthorizationServerConfig {
         httpSecurity.csrf(csrf->csrf.disable());
 
         // 配置异常捕获
-
-        // 开启表单登录
         httpSecurity.exceptionHandling(
                 exception -> exception.authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler)
         );

@@ -32,7 +32,6 @@ public class JsonAuthenticationSuccessHandler implements AuthenticationSuccessHa
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.OK.value());
-        System.out.println("Success");
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(response.getOutputStream(), Result.success(ResultCode.SUCCESS));
     }

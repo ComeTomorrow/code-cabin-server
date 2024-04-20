@@ -1,14 +1,16 @@
 package org.example.authentication.controller;
 
+import cn.hutool.jwt.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.example.authentication.model.MemberUserDetails;
 import org.example.authentication.service.MemberUserDetailsService;
 import org.example.common.core.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +28,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/api/auth")
 @Slf4j
-public class AuthController {
+public class AuthorizationController {
 
     @Autowired
     private MemberUserDetailsService userDetailsService;
@@ -39,10 +41,15 @@ public class AuthController {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser.getUsername(),loginUser.getPassword());
         Authentication authenticate = authenticationProvider.authenticate(authenticationToken);
         if (Objects.isNull(authenticate)){
-            throw new RuntimeException("erreo");
+            log.error("拒绝访问：用户名或密码错误");
+            throw new BadCredentialsException("拒绝访问，用户名或密码错误");
         }
-        UserDetails userDetails = userDetailsService.loadUserByMobile(loginUser.getUsername());
-        return Result.success(userDetails);
+
+        // 如果认证通过，使用userid生成一个jwt，jwt存入BaseResultVO返回
+//        MemberUserDetails principal = (MemberUserDetails)authenticate.getPrincipal();
+        MemberUserDetails principal = (MemberUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        JWTUtil.createToken()
+        return Result.success();
     }
 
 }
