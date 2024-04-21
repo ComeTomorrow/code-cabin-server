@@ -4,6 +4,7 @@ import cn.hutool.jwt.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.example.authentication.model.MemberUserDetails;
 import org.example.authentication.service.MemberUserDetailsService;
+import org.example.common.core.constant.JwtClaimConstants;
 import org.example.common.core.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -14,6 +15,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -37,7 +40,7 @@ public class AuthorizationController {
     private AuthenticationProvider authenticationProvider;
 
     @PostMapping("/login")
-    public Result<UserDetails> login(@RequestBody MemberUserDetails loginUser) {
+    public Result<String> login(@RequestBody MemberUserDetails loginUser) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser.getUsername(),loginUser.getPassword());
         Authentication authenticate = authenticationProvider.authenticate(authenticationToken);
         if (Objects.isNull(authenticate)){
@@ -46,10 +49,15 @@ public class AuthorizationController {
         }
 
         // 如果认证通过，使用userid生成一个jwt，jwt存入BaseResultVO返回
-//        MemberUserDetails principal = (MemberUserDetails)authenticate.getPrincipal();
-        MemberUserDetails principal = (MemberUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        JWTUtil.createToken()
-        return Result.success();
+        MemberUserDetails principal = (MemberUserDetails)authenticate.getPrincipal();
+//        MemberUserDetails principal = (MemberUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Map<String,Object> payload = new HashMap<>();
+        payload.put("userId",principal.getId());
+        payload.put("userName",principal.getUsername());
+        String token = JWTUtil.createToken(payload, JwtClaimConstants.JWT_KEY.getBytes());
+
+        return Result.success(token);
     }
 
 }
