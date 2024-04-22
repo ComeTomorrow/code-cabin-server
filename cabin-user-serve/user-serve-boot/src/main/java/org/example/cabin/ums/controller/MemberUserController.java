@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberUserController {
 
     @Autowired
-    private MemberUserService umsMemberService;
+    private MemberUserService memberUserService;
 
 //    @Operation(summary= "根据会员ID获取openid")
 //    @GetMapping("/{memberId}/openid")
@@ -73,9 +73,9 @@ public class MemberUserController {
 
 //    @Operation(summary= "根据手机号获取会员认证信息",hidden = true)
     @GetMapping("/mobile/{mobile}")
-    public Result<MemberAuthDTO> getMemberByMobile(@PathVariable String mobile)
+    public Result<MemberAuthDTO> getMemberByMobile(@PathVariable("mobile") String mobile)
     {
-        MemberAuthDTO memberAuthInfo = umsMemberService.getMemberUserByMobile(mobile);
+        MemberAuthDTO memberAuthInfo = memberUserService.getMemberUserByMobile(mobile);
         return Result.success(memberAuthInfo);
     }
 
