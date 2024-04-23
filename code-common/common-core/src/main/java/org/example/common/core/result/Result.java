@@ -24,6 +24,14 @@ public class Result<T> implements Serializable {
         return success(null);
     }
 
+    public static <T> Result<T> success(ResultCode resultCode, T data) {
+        Result<T> result = new Result<>();
+        result.setCode(resultCode.getCode());
+        result.setMsg(resultCode.getMsg());
+        result.setData(data);
+        return result;
+    }
+
     public static <T> Result<T> success(T data) {
         Result<T> result = new Result<>();
         result.setCode(ResultCode.SUCCESS.getCode());
@@ -36,7 +44,7 @@ public class Result<T> implements Serializable {
         return result(ResultCode.SYSTEM_EXECUTION_ERROR.getCode(), ResultCode.SYSTEM_EXECUTION_ERROR.getMsg(), null);
     }
 
-    public static <T> Result<T> failed(String msg) {
+     public static <T> Result<T> failed(String msg) {
         return result(ResultCode.SYSTEM_EXECUTION_ERROR.getCode(), msg, null);
     }
 

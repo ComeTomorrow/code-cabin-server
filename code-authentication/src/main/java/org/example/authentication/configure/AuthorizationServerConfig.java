@@ -84,7 +84,7 @@ public class AuthorizationServerConfig {
         );
 
         httpSecurity.authorizeHttpRequests(
-                authorize -> authorize.requestMatchers("/auth/login").permitAll()
+                authorize -> authorize.requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()
         );
         httpSecurity.cors(Customizer.withDefaults());

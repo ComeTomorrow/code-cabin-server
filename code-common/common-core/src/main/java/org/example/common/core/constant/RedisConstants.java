@@ -1,5 +1,11 @@
 package org.example.common.core.constant;
 
+/**
+ * Redis
+ *
+ * @author ComeTomorrow
+ * @since 2024/3/30
+ */
 public interface RedisConstants {
 
     /**

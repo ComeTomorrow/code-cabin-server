@@ -1,5 +1,11 @@
 package org.example.common.core.constant;
 
+/**
+ * Jwt载荷常量
+ *
+ * @author ComeTomorrow
+ * @since 2024/3/30
+ */
 public interface JwtClaimConstants {
 
     /**

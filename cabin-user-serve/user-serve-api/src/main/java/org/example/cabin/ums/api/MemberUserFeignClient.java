@@ -33,6 +33,15 @@ public interface MemberUserFeignClient {
     @GetMapping("/app-api/v1/members/mobile/{mobile}")
     Result<MemberAuthDTO> loadUserByMobile(@PathVariable String mobile);
 
+    /**
+     * 创建会员信息
+     *
+     * @param memberAuth 会员信息
+     * @return 会员认证信息
+     */
+    @PutMapping("/app-api/v1/members/add")
+    Result<Integer> createUserByMobile(@RequestBody MemberAuthDTO memberAuth);
+
 }
 
 

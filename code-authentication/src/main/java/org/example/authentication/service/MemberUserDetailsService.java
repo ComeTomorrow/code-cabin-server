@@ -11,6 +11,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Service;
  * @since 2024/4/2
  */
 @Service
-public class MemberUserDetailsService implements UserDetailsManager, UserDetailsPasswordService {
+public class MemberUserDetailsService implements UserDetailsService, UserDetailsPasswordService {
 
     @Autowired
     private MemberUserFeignClient memberFeignClient;
@@ -32,27 +33,22 @@ public class MemberUserDetailsService implements UserDetailsManager, UserDetails
         return null;
     }
 
-    @Override
-    public void createUser(UserDetails user) {
-
+    public void createUser(MemberAuthDTO user) {
+        memberFeignClient.createUserByMobile(user);
     }
 
-    @Override
     public void updateUser(UserDetails user) {
 
     }
 
-    @Override
     public void deleteUser(String username) {
 
     }
 
-    @Override
     public void changePassword(String oldPassword, String newPassword) {
 
     }
 
-    @Override
     public boolean userExists(String username) {
         return false;
     }

@@ -11,4 +11,6 @@ public interface MemberUserService {
      * @return
      */
     MemberAuthDTO getMemberUserByMobile(String mobile);
+
+    int addMemberUser(MemberAuthDTO member);
 }

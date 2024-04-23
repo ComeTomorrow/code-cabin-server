@@ -6,16 +6,20 @@ package org.example.common.core.constant;
  * @author ComeTomorrow
  * @since 2024/3/30
  */
-public class TokenConstants
+public interface TokenConstants
 {
     /**
      * 令牌前缀
      */
-    public static final String PREFIX = "Bearer ";
+    String PREFIX = "Bearer ";
 
     /**
-     * 令牌秘钥
+     * 令牌类型
      */
-//    public final static String SECRET = "abcdefghijklmnopqrstuvwxyz";
+    String TOKEN_TYPE = "token_type";
 
+    /**
+     * 认证令牌
+     */
+    String TOKEN = "access_token";
 }

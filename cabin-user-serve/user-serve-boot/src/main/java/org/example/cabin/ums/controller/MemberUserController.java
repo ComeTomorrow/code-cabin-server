@@ -2,6 +2,7 @@ package org.example.cabin.ums.controller;
 
 import org.example.cabin.ums.dto.MemberAuthDTO;
 import org.example.cabin.ums.service.MemberUserService;
+import org.example.common.core.enums.ResultCode;
 import org.example.common.core.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +26,11 @@ public class MemberUserController {
 //    }
 
 //    @Operation(summary= "新增会员")
-//    @PostMapping
-//    public Result<Long> addMember(@RequestBody MemberRegisterDto member) {
-//        Long memberId = umsMemberService.addMember(member);
-//        return Result.success(memberId);
-//    }
+    @PutMapping("/add")
+    public Result<String> addMember(@RequestBody MemberAuthDTO memberAuth) {
+        memberUserService.addMemberUser(memberAuth);
+        return Result.success(ResultCode.DATABASE_ADD_DATA_SUCCESS,null);
+    }
 
 //    @Operation(summary= "获取登录会员信息")
 //    @GetMapping("/me")

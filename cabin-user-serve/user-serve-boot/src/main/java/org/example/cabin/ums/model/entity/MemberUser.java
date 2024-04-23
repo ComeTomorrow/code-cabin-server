@@ -42,7 +42,7 @@ public class MemberUser extends BaseEntity {
 
     private String province;
 
-    private Integer status;
+    private Boolean status;
 
     private Long balance;
 

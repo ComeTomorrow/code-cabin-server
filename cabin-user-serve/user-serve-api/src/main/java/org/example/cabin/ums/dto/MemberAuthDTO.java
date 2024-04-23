@@ -31,8 +31,8 @@ public class MemberAuthDTO {
     private String password;
 
     /**
-     * 状态(1:正常；0：禁用)
+     * 状态(true:正常；false：禁用)
      */
-    private Integer status;
+    private Boolean status;
 
 }

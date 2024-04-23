@@ -7,6 +7,7 @@ import org.example.cabin.ums.model.entity.MemberUser;
 import org.example.cabin.ums.service.MemberUserService;
 import org.example.common.core.enums.ResultCode;
 import org.example.common.web.exception.BizException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class MemberUserServiceImpl implements MemberUserService {
 
     @Autowired
-    private MemberUserMapper memberMapper;
+    private MemberUserMapper memberUserMapper;
 
     /**
      * 根据手机号获取会员认证信息
@@ -24,7 +25,7 @@ public class MemberUserServiceImpl implements MemberUserService {
      */
     @Override
     public MemberAuthDTO getMemberUserByMobile(String mobile) {
-        MemberUser user = memberMapper.selectOne(
+        MemberUser user = memberUserMapper.selectOne(
                 Wrappers.lambdaQuery(MemberUser.class)
                         .eq(MemberUser::getMobile, mobile)
                         .select(MemberUser::getId, MemberUser::getMobile, MemberUser::getStatus, MemberUser::getPassword)
@@ -40,5 +41,14 @@ public class MemberUserServiceImpl implements MemberUserService {
         authDTO.setStatus(user.getStatus());
         authDTO.setPassword(user.getPassword());
         return authDTO;
+    }
+
+    @Override
+    public int addMemberUser(MemberAuthDTO member) {
+        MemberUser entity = new MemberUser();
+        entity.setMobile(member.getUsername());
+        entity.setPassword(member.getPassword());
+        entity.setStatus(member.getStatus());
+        return memberUserMapper.insert(entity);
     }
 }

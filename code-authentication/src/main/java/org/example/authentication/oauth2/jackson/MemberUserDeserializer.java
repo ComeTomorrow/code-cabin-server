@@ -60,7 +60,7 @@ public class MemberUserDeserializer extends JsonDeserializer<MemberUserDetails> 
         memberAuthInfo.setId(userId);
         memberAuthInfo.setUsername(username);
         memberAuthInfo.setPassword(password);
-        memberAuthInfo.setStatus(0);
+        memberAuthInfo.setStatus(true);
         MemberUserDetails result = new MemberUserDetails(memberAuthInfo);
 //        if (passwordNode.asText(null) == null) {
 //            result.eraseCredentials();
