@@ -15,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -40,6 +41,9 @@ public class AuthorizationController {
 
     @Autowired
     private AuthenticationProvider authenticationProvider;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     public Result<Map> login(@RequestBody MemberUserDetails loginUser) {
@@ -70,7 +74,8 @@ public class AuthorizationController {
         //
         MemberAuthDTO user = new MemberAuthDTO();
         user.setUsername(userDetails.getUsername());
-        user.setPassword(userDetails.getPassword());
+        String encode = passwordEncoder.encode(userDetails.getPassword());
+        user.setPassword(encode);
         user.setStatus(userDetails.getEnabled());
         user.setId(user.getId());
 
