@@ -13,6 +13,7 @@
     <module>code-gateway</module>
     <module>code-authentication</module>
     <module>cabin-user-serve</module>
+      <module>cabin-blogs-serve</module>
   </modules>
 
   <parent>

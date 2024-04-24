@@ -33,6 +33,6 @@ public class MemberAuthDTO {
     /**
      * 状态(true:正常；false：禁用)
      */
-    private Boolean status;
+    private Boolean enabled;
 
 }

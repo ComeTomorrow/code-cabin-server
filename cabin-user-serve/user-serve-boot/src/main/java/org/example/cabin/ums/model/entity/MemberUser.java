@@ -15,40 +15,20 @@ import java.time.LocalDate;
 @Data
 public class MemberUser extends BaseEntity {
 
-    @TableId(type = IdType.AUTO)
-    private Long id;
-
-    private Integer gender;
-
-    private String nickName;
-
     private String mobile;
+
+    private String muCode;
 
     private String password;
 
-    private LocalDate birthday;
+    private String nickName;
 
-    private String avatarUrl;
+    private Boolean enabled;
 
-    private String openid;
+    private Boolean accountNonExpired;
 
-    private String sessionKey;
+    private Boolean accountNonLocked;
 
-    private String city;
-
-    private String country;
-
-    private String language;
-
-    private String province;
-
-    private Boolean status;
-
-    private Long balance;
-
-    @TableLogic(delval = "1", value = "0")
-    private Integer deleted;
-
-    private Integer point;
+    private Boolean credentialsNonExpired;
 
 }

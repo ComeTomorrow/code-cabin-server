@@ -7,9 +7,12 @@ import org.example.cabin.ums.model.entity.MemberUser;
 import org.example.cabin.ums.service.MemberUserService;
 import org.example.common.core.enums.ResultCode;
 import org.example.common.web.exception.BizException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
+import java.util.UUID;
 
 @Service
 public class MemberUserServiceImpl implements MemberUserService {
@@ -28,7 +31,7 @@ public class MemberUserServiceImpl implements MemberUserService {
         MemberUser user = memberUserMapper.selectOne(
                 Wrappers.lambdaQuery(MemberUser.class)
                         .eq(MemberUser::getMobile, mobile)
-                        .select(MemberUser::getId, MemberUser::getMobile, MemberUser::getStatus, MemberUser::getPassword)
+                        .select(MemberUser::getId, MemberUser::getMobile, MemberUser::getEnabled, MemberUser::getPassword)
         );
 
         if (user == null) {
@@ -38,17 +41,31 @@ public class MemberUserServiceImpl implements MemberUserService {
         MemberAuthDTO authDTO = new MemberAuthDTO();
         authDTO.setId(user.getId());
         authDTO.setUsername(user.getMobile());
-        authDTO.setStatus(user.getStatus());
+        authDTO.setEnabled(user.getEnabled());
         authDTO.setPassword(user.getPassword());
         return authDTO;
     }
 
+    @Transactional
     @Override
     public int addMemberUser(MemberAuthDTO member) {
+        MemberUser user = memberUserMapper.selectOne(
+                Wrappers.lambdaQuery(MemberUser.class)
+                        .eq(MemberUser::getMobile, member.getUsername())
+        );
+
+        if(Objects.nonNull(user)){
+            return 0;
+        }
         MemberUser entity = new MemberUser();
         entity.setMobile(member.getUsername());
         entity.setPassword(member.getPassword());
-        entity.setStatus(member.getStatus());
+        entity.setMuCode(UUID.randomUUID().toString());
+        entity.setNickName("coder"+entity.getMuCode());
+        entity.setEnabled(true);
+        entity.setAccountNonExpired(true);
+        entity.setAccountNonLocked(true);
+        entity.setCredentialsNonExpired(true);
         return memberUserMapper.insert(entity);
     }
 }

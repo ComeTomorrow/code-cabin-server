@@ -55,7 +55,7 @@ public class MemberUserDetails implements UserDetails, CredentialsContainer {
         this.setId(memberAuthInfo.getId());
         this.setUsername(memberAuthInfo.getUsername());
         this.setPassword(memberAuthInfo.getPassword());
-        this.setEnabled(GlobalConstants.STATUS_YES.equals(memberAuthInfo.getStatus()));
+        this.setEnabled(memberAuthInfo.getEnabled());
     }
 
     @Override

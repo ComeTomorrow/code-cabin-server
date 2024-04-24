@@ -1,7 +1,9 @@
 package org.example.common.core.base;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serial;
@@ -17,9 +19,8 @@ public class BaseEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-//    private String createBy;
-//
-//    private String updateBy;
+    @TableId(type = IdType.AUTO)
+    private Long id;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;

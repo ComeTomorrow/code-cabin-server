@@ -27,9 +27,13 @@ public class MemberUserController {
 
 //    @Operation(summary= "新增会员")
     @PutMapping("/add")
-    public Result<String> addMember(@RequestBody MemberAuthDTO memberAuth) {
-        memberUserService.addMemberUser(memberAuth);
-        return Result.success(ResultCode.DATABASE_ADD_DATA_SUCCESS,null);
+    public Result<Integer> addMember(@RequestBody MemberAuthDTO memberAuth) {
+        int i = memberUserService.addMemberUser(memberAuth);
+        if (i==0) {
+            return Result.failed("新增会员用户失败");
+        }else {
+            return Result.success("新增会员用户成功", i);
+        }
     }
 
 //    @Operation(summary= "获取登录会员信息")

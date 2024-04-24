@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
 /**
@@ -33,8 +32,9 @@ public class MemberUserDetailsService implements UserDetailsService, UserDetails
         return null;
     }
 
-    public void createUser(MemberAuthDTO user) {
-        memberFeignClient.createUserByMobile(user);
+    public Integer createUser(MemberAuthDTO user) {
+        Result<Integer> result = memberFeignClient.createUserByMobile(user);
+        return result.getData();
     }
 
     public void updateUser(UserDetails user) {
@@ -74,6 +74,8 @@ public class MemberUserDetailsService implements UserDetailsService, UserDetails
             throw new LockedException("该账号已被锁定!");
         } else if (!userDetails.isAccountNonExpired()) {
             throw new AccountExpiredException("该账号已过期!");
+        } else if (!userDetails.isCredentialsNonExpired()) {
+            throw new AccountExpiredException("登录凭证已过期!");
         }
         return userDetails;
     }

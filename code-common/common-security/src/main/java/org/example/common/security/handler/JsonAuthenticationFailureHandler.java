@@ -33,6 +33,6 @@ public class JsonAuthenticationFailureHandler implements AuthenticationFailureHa
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(response.getOutputStream(), Result.failed(ResultCode.ACCESS_UNAUTHORIZED));
+        mapper.writeValue(response.getOutputStream(), Result.result(ResultCode.ACCESS_UNAUTHORIZED, null));
     }
 }

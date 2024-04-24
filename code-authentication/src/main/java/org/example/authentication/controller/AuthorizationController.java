@@ -1,5 +1,6 @@
 package org.example.authentication.controller;
 
+import cn.hutool.core.lang.UUID;
 import cn.hutool.jwt.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.example.authentication.model.MemberUserDetails;
@@ -49,10 +50,6 @@ public class AuthorizationController {
     public Result<Map> login(@RequestBody MemberUserDetails loginUser) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser.getUsername(),loginUser.getPassword());
         Authentication authenticate = authenticationProvider.authenticate(authenticationToken);
-        if (Objects.isNull(authenticate)){
-            log.error("拒绝访问：用户名或密码错误");
-            throw new BadCredentialsException("拒绝访问，用户名或密码错误");
-        }
 
         // 如果认证通过，使用userid生成一个jwt，jwt存入BaseResultVO返回
         MemberUserDetails principal = (MemberUserDetails)authenticate.getPrincipal();
@@ -70,16 +67,18 @@ public class AuthorizationController {
     }
 
     @PutMapping("/register")
-    public Result<String> register(@RequestBody MemberUserDetails userDetails) {
-        //
+    public Result<Integer> register(@RequestBody MemberUserDetails userDetails) {
         MemberAuthDTO user = new MemberAuthDTO();
         user.setUsername(userDetails.getUsername());
         String encode = passwordEncoder.encode(userDetails.getPassword());
         user.setPassword(encode);
-        user.setStatus(userDetails.getEnabled());
-        user.setId(user.getId());
+        user.setEnabled(userDetails.getEnabled());
 
-        userDetailsService.createUser(user);
-        return Result.success();
+        Integer i = userDetailsService.createUser(user);
+        if (i==null) {
+            return Result.failed("注册失败，该手机号已被注册");
+        }else {
+            return Result.success("注册成功",null);
+        }
     }
 }
