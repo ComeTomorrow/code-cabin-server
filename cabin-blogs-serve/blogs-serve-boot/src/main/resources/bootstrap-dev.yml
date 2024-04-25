@@ -1,0 +1,31 @@
+server:
+  port: 8820
+
+spring:
+  mvc:
+    path-match:
+      matching-strategy: ant_path_matcher
+  cloud:
+    nacos:
+      # 注册中心
+      discovery:
+        username: nacos
+        password: nacos
+        # 服务注册地址
+        server-addr: http://localhost:8848
+        # 命名空间
+        namespace: e0f6e633-a4a7-4d0b-85ee-7057f147d89a
+      # 配置中心
+      config:
+        username: nacos
+        password: nacos
+        # 配置中心地址
+        server-addr: http://localhost:8848
+        # 命名空间
+        namespace: e0f6e633-a4a7-4d0b-85ee-7057f147d89a
+        # 配置文件格式
+        file-extension: yaml
+        prefix: ${spring.application.name}-${spring.profiles.active}
+        shared-configs:
+          - data-id: cabin-common-dev.yaml
+            refresh: true

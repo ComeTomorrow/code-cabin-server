@@ -10,6 +10,11 @@
     </parent>
 
     <artifactId>cabin-blogs-serve</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>blogs-serve-api</module>
+        <module>blogs-serve-boot</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

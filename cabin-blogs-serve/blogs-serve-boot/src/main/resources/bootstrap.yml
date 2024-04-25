@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: cabin-blogs-serve
+  profiles:
+    active: dev
