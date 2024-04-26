@@ -2,3 +2,4 @@ org.example.common.security.service.PermissionService
 org.example.common.security.configure.ResourceServerConfig
 org.example.common.security.handler.JsonAccessDeniedHandler
 org.example.common.security.handler.JsonAuthenticationEntryPoint
+org.example.common.security.filter.JwtAuthenticationTokenFilter

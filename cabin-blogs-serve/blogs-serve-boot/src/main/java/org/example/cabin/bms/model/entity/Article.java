@@ -14,8 +14,6 @@ public class Article extends BaseEntity {
 
     private Long userId;  // 会员id
 
-    private String nickName;    // 会员昵称
-
     private String subtitle;    // 副标题
 
     private String summary;    // 文章摘要
@@ -31,5 +29,7 @@ public class Article extends BaseEntity {
     private Integer visibleRange;   // 可见范围
 
     private Integer status;     // 状态
+
+    private Long hits;      // 点击量
 
 }

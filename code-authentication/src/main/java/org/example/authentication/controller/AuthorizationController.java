@@ -57,7 +57,7 @@ public class AuthorizationController {
         // 生成jwt
         Map<String,Object> payload = new HashMap<>();
         payload.put(JwtClaimConstants.USER_ID, principal.getId());
-        payload.put(JwtClaimConstants.USERNAME, principal.getUsername());
+        payload.put(JwtClaimConstants.NICKNAME, principal.getUsername());
         String token = JWTUtil.createToken(payload, JwtClaimConstants.JWT_KEY.getBytes());
 
         Map<String,Object> map = new HashMap<>();

@@ -1,6 +1,7 @@
 package org.example.common.security.util;
 
 import cn.hutool.core.convert.Convert;
+import org.example.common.core.constant.JwtClaimConstants;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,22 +20,22 @@ import java.util.stream.Collectors;
  */
 public class SecurityUtils {
 
-//    public static Long getUserId() {
-//        Map<String, Object> tokenAttributes = getTokenAttributes();
-//        if (tokenAttributes != null) {
-//            return Convert.toLong(tokenAttributes.get("userId"));
-//        }
-//        return null;
-//    }
-//
-//    public static String getUsername() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication != null) {
-//            return authentication.getName();
-//        }
-//        return null;
-//    }
-//
+    public static Long getUserId() {
+        Map<String, Object> tokenAttributes = getTokenAttributes();
+        if (tokenAttributes != null) {
+            return Convert.toLong(tokenAttributes.get(JwtClaimConstants.USER_ID));
+        }
+        return null;
+    }
+
+    public static String getUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            return authentication.getName();
+        }
+        return null;
+    }
+
     public static Map<String, Object> getTokenAttributes() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof JwtAuthenticationToken jwtAuthenticationToken) {
@@ -57,17 +58,7 @@ public class SecurityUtils {
         return null;
     }
 
-    /**
-     * 获取部门ID
-     */
-//    public static Long getDeptId() {
-//        Map<String, Object> tokenAttributes = getTokenAttributes();
-//        if (tokenAttributes != null) {
-//            return Convert.toLong(tokenAttributes.get("deptId"));
-//        }
-//        return null;
-//    }
-//
+
 //    public static boolean isRoot() {
 //        Set<String> roles = getRoles();
 //        return roles != null && roles.contains(SystemConstants.ROOT_ROLE_CODE);

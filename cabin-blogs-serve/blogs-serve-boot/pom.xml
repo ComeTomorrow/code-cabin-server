@@ -67,23 +67,25 @@
             <version>1.0.0</version>
         </dependency>
 
-        <!--        <dependency>-->
-        <!--            <groupId>com.youlai</groupId>-->
-        <!--            <artifactId>common-redis</artifactId>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>common-redis</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>common-security</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
         <!--        <dependency>-->
-        <!--            <groupId>com.youlai</groupId>-->
-        <!--            <artifactId>common-security</artifactId>-->
-        <!--        </dependency>-->
-
-        <!--        <dependency>-->
-        <!--            <groupId>com.youlai</groupId>-->
+        <!--            <groupId>org.example</groupId>-->
         <!--            <artifactId>common-seata</artifactId>-->
         <!--        </dependency>-->
 
         <!--        <dependency>-->
-        <!--            <groupId>com.youlai</groupId>-->
+        <!--            <groupId>org.example</groupId>-->
         <!--            <artifactId>common-apidoc</artifactId>-->
         <!--        </dependency>-->
     </dependencies>

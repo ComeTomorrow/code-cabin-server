@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.example.common.core.constant.JwtClaimConstants;
+import org.example.common.security.filter.JwtAuthenticationTokenFilter;
 import org.example.common.security.handler.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -25,6 +26,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
@@ -49,6 +51,9 @@ public class ResourceServerConfig {
     @Autowired
     private AuthenticationEntryPoint authenticationEntryPoint;
 
+    @Autowired
+    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+
     /**
      * 白名单路径列表
      */
@@ -72,6 +77,8 @@ public class ResourceServerConfig {
                 }
         ).csrf(AbstractHttpConfigurer::disable);
 
+        http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
 //        http.oauth2ResourceServer(resourceServerConfigurator ->
 //                resourceServerConfigurator
 //                        .jwt(jwtConfigurator -> jwtAuthenticationConverter())
@@ -80,8 +87,8 @@ public class ResourceServerConfig {
 //        );
         // 异常配置
         http.exceptionHandling(exception ->
-                exception.authenticationEntryPoint(new JsonAuthenticationEntryPoint())  //认证入口，未认证异常
-                        .accessDeniedHandler(new JsonAccessDeniedHandler())     //权限不足
+                exception.accessDeniedHandler(new JsonAccessDeniedHandler())     //权限不足
+                        .authenticationEntryPoint(new JsonAuthenticationEntryPoint())  //认证入口，未认证异常
         );
 
         return http.build();

@@ -12,16 +12,28 @@ import lombok.Data;
 @Data
 public class ArticleVO {
 
-//    @Schema(description="会员ID")
-    private Long id;
+    private String title;    // 文章标题
 
-//    @Schema(description="会员昵称")
-    private String nickName;
+    private Long userId;  // 会员id
 
-//    @Schema(description="会员头像地址")
-    private String avatarUrl;
+    private String nickName;    // 会员昵称
 
-//    @Schema(description="会员手机号")
-    private String mobile;
+    private String subtitle;    // 副标题
+
+    private String summary;    // 文章摘要
+
+    private String coverAddress;   // 封面地址
+
+    private String contentAddress;  // 内容地址
+
+    private Integer type;    // 文章类型
+
+    private String originalLink;    // 原始链接
+
+    private Integer visibleRange;   // 可见范围
+
+    private Integer status;     // 状态
+
+    private Long hits;      // 点击量
 
 }

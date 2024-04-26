@@ -4,9 +4,8 @@ import lombok.Data;
 import org.example.common.core.base.BaseEntity;
 
 @Data
-public class ArticleTags extends BaseEntity {
+public class Draft extends BaseEntity {
 
-    private String name;
+    private String content;
 
-    private Long parentId;
 }
