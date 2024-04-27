@@ -10,11 +10,8 @@ import org.example.cabin.ums.dto.MemberAuthDTO;
 import org.example.common.core.result.PageResult;
 import org.example.common.core.result.Result;
 import org.example.common.security.util.SecurityUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/app-api/v1/content")
@@ -25,8 +22,8 @@ public class ContentManagementController {
 
     @GetMapping("/article/page")
     public PageResult<ArticleVO> getArticlesPage(ContentQuery query) {
-        System.out.println("username"+SecurityUtils.getUsername());
-        System.out.println("userId"+SecurityUtils.getUserId());
+        System.out.println("username="+SecurityUtils.getUsername());
+        System.out.println("userId="+SecurityUtils.getUserId());
         query.setUserId(SecurityUtils.getUserId());
         IPage<Article> bos = contentService.getArticlesPaginateByUser(query);
         IPage<ArticleVO> vos = new Page<>();

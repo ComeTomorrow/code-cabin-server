@@ -14,10 +14,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
@@ -77,6 +79,15 @@ public class ResourceServerConfig {
                 }
         ).csrf(AbstractHttpConfigurer::disable);
 
+        // 不使用session存储信息
+        http.sessionManagement(session->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        );
+
+        http.formLogin(AbstractHttpConfigurer::disable);
+        http.httpBasic(AbstractHttpConfigurer::disable);//禁用httpBasic，因为我们传输数据用的是post，而且请求体是JSON
+
+        // 添加filter
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
 //        http.oauth2ResourceServer(resourceServerConfigurator ->
@@ -91,6 +102,7 @@ public class ResourceServerConfig {
                         .authenticationEntryPoint(new JsonAuthenticationEntryPoint())  //认证入口，未认证异常
         );
 
+        http.cors(Customizer.withDefaults());
         return http.build();
     }
 

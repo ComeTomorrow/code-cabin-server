@@ -2,12 +2,17 @@ package org.example.common.security.filter;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.jwt.JWT;
+import cn.hutool.jwt.JWTPayload;
 import cn.hutool.jwt.JWTUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.common.core.constant.JwtClaimConstants;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -27,9 +32,12 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
 
         JWT jwt = JWTUtil.parseToken(token);
-        System.out.println(jwt);
-        var payload = jwt.getPayload();
+        JWTPayload payload = jwt.getPayload();
         System.out.println(payload);
+
+        Object username = payload.getClaim(JwtClaimConstants.MOBILE);
+
+
 //        if (payload == null) {
 //            throw new JwtException("token 异常");
 //        }
@@ -37,16 +45,21 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 //        if (jwtUtils.isTokenExpired(claim)) {
 //            throw new JwtException("token 已过期");
 //        }
-//
+////
 //        String username = claim.getSubject();
 //        // 获取用户的权限等信息
 //
 //        SysUser sysUser = sysUserService.getByUsername(username);
-//
-//
-//        // 构建UsernamePasswordAuthenticationToken,这里密码为null，是因为提供了正确的JWT,实现自动登录
-//        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, null, userDetailService.getUserAuthority(sysUser.getId()));
-//        SecurityContextHolder.getContext().setAuthentication(token);
+        var context = SecurityContextHolder.getContext();
+
+        System.out.println(context);
+        System.out.println( context.getAuthentication());
+
+        // 构建UsernamePasswordAuthenticationToken,这里密码为null，是因为提供了正确的JWT,实现自动登录
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, "123456");
+        authenticationToken.setAuthenticated(false);
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        System.out.println( context.getAuthentication());
 
         filterChain.doFilter(request, response);
     }

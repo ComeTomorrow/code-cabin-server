@@ -1,9 +1,8 @@
 package org.example.authentication.model;
 
-import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.example.cabin.ums.dto.MemberAuthDTO;
-import org.example.common.core.constant.GlobalConstants;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +16,7 @@ import java.util.Collections;
  * @author ComeTomorrow
  * @since 2024/4/8
  */
-@Data
+@Setter
 @NoArgsConstructor
 public class MemberUserDetails implements UserDetails, CredentialsContainer {
     /**
@@ -31,6 +30,11 @@ public class MemberUserDetails implements UserDetails, CredentialsContainer {
     private String username;
 
     /**
+     * 会员昵称
+     */
+    private String nickName;
+
+    /**
      * 会员密码
      */
     private String password;
@@ -39,6 +43,21 @@ public class MemberUserDetails implements UserDetails, CredentialsContainer {
      * 会员状态
      */
     private Boolean enabled;
+
+    /**
+     * 帐户未过期
+     */
+    private Boolean accountNonExpired;
+
+    /**
+     * 帐户未锁定
+     */
+    private Boolean accountNonLocked;
+
+    /**
+     * 凭据未过期
+     */
+    private Boolean credentialsNonExpired;
 
     /**
      * 扩展字段：认证身份标识，枚举值如下：
@@ -54,8 +73,12 @@ public class MemberUserDetails implements UserDetails, CredentialsContainer {
     public MemberUserDetails(MemberAuthDTO memberAuthInfo) {
         this.setId(memberAuthInfo.getId());
         this.setUsername(memberAuthInfo.getUsername());
+        this.setNickName(memberAuthInfo.getNickName());
         this.setPassword(memberAuthInfo.getPassword());
         this.setEnabled(memberAuthInfo.getEnabled());
+        this.setAccountNonExpired(memberAuthInfo.getAccountNonExpired());
+        this.setAccountNonLocked(memberAuthInfo.getAccountNonLocked());
+        this.setCredentialsNonExpired(memberAuthInfo.getCredentialsNonExpired());
     }
 
     @Override
@@ -75,17 +98,17 @@ public class MemberUserDetails implements UserDetails, CredentialsContainer {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return this.accountNonExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return this.accountNonLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return this.credentialsNonExpired;
     }
 
     @Override
@@ -96,5 +119,13 @@ public class MemberUserDetails implements UserDetails, CredentialsContainer {
     @Override
     public void eraseCredentials() {
         this.password = null;
+    }
+
+    public String getNickName() {
+        return this.nickName;
+    }
+
+    public Long getId() {
+        return this.id;
     }
 }

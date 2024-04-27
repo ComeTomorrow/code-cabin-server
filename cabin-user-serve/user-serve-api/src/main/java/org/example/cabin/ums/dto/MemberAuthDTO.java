@@ -26,6 +26,16 @@ public class MemberAuthDTO {
     private String username;
 
     /**
+     * 会员昵称
+     */
+    private String nickName;
+
+    /**
+     * 系统生成的唯一编码
+     */
+    private String muCode;
+
+    /**
      * 密码
      */
     private String password;
@@ -35,4 +45,18 @@ public class MemberAuthDTO {
      */
     private Boolean enabled;
 
+    /**
+     * 帐户未过期
+     */
+    private Boolean accountNonExpired;
+
+    /**
+     * 帐户未锁定
+     */
+    private Boolean accountNonLocked;
+
+    /**
+     * 凭据未过期
+     */
+    private Boolean credentialsNonExpired;
 }

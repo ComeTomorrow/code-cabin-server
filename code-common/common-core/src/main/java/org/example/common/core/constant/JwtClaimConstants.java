@@ -14,14 +14,34 @@ public interface JwtClaimConstants {
     String USER_ID = "userId";
 
     /**
-     * 会员昵称
+     * 手机
      */
-    String NICKNAME = "nickName";
+    String MOBILE = "mobile";
 
     /**
-     * 部门ID
+     * 会员昵称
      */
-    String DEPT_ID = "deptId";
+    String NICK_NAME = "nickName";
+
+    /**
+     * 启用
+     */
+    String ENABLED = "enabled";
+
+    /**
+     * 帐户未过期
+     */
+    String ACCOUNT_NON_EXPIRED = "accountNonExpired";
+
+    /**
+     * 帐户未锁定
+     */
+    String ACCOUNT_NON_LOCKED = "accountNonLocked";
+
+    /**
+     * 凭据未过期
+     */
+    String CREDENTIALS_NON_EXPIRED = "credentialsNonExpired";
 
     /**
      * 数据权限
