@@ -34,7 +34,7 @@ public class MybatisPlusConfig {
         //数据权限
 //        interceptor.addInnerInterceptor(new DataPermissionInterceptor(new IDataPermissionHandler()));
         //分页插件
-        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MARIADB));
 
         return interceptor;
     }
