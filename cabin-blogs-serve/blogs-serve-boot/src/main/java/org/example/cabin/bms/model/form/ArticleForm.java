@@ -1,9 +1,10 @@
-package org.example.cabin.bms.model.bo;
+package org.example.cabin.bms.model.form;
 
 import lombok.Data;
 
+//@Schema(description = "地址表单对象")
 @Data
-public class ArticleBO {
+public class ArticleForm {
 
     private String title;    // 文章标题
 

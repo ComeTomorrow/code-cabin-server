@@ -3,6 +3,7 @@ package org.example.cabin.bms.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.example.cabin.bms.model.entity.Article;
+import org.example.cabin.bms.model.form.ArticleForm;
 import org.example.cabin.bms.model.query.ContentQuery;
 import org.example.cabin.bms.model.vo.ArticleVO;
 import org.example.cabin.bms.service.BlogsContentService;
@@ -46,16 +47,15 @@ public class ContentManagementController {
         return PageResult.success(vos);
     }
 
-//    @Operation(summary= "新增会员")
-    @PutMapping("/add")
-    public Result<Integer> addMember(@RequestBody MemberAuthDTO memberAuth) {
-//        int i = contentService.addMemberUser(memberAuth);
-//        if (i==0) {
-//            return Result.failed("新增会员用户失败");
-//        }else {
-//            return Result.success("新增会员用户成功", i);
-//        }
-        return null;
+//    @Operation(summary= "新增文章")
+    @PutMapping("/article/add")
+    public Result<Integer> addArticle(ArticleForm form) {
+        int i = contentService.addArticle(form);
+        if (i == 0) {
+            return Result.failed("新增文章失败");
+        }else {
+            return Result.success("新增文章成功", i);
+        }
     }
 
 }

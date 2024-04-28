@@ -29,7 +29,7 @@ public class MemberUserController {
     @PutMapping("/add")
     public Result<Integer> addMember(@RequestBody MemberAuthDTO memberAuth) {
         int i = memberUserService.addMemberUser(memberAuth);
-        if (i==0) {
+        if (i == 0) {
             return Result.failed("新增会员用户失败");
         }else {
             return Result.success("新增会员用户成功", i);

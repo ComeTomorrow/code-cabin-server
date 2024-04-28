@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.example.authentication.model.MemberUserDetails;
 import org.example.authentication.service.MemberUserDetailsService;
+import org.example.common.security.filter.JwtAuthenticationTokenFilter;
 import org.example.common.security.handler.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -66,6 +67,9 @@ public class AuthorizationServerConfig {
 
     @Autowired
     private JsonAccessDeniedHandler accessDeniedHandler;
+
+    @Autowired
+    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
     
 
     @Bean
@@ -76,12 +80,15 @@ public class AuthorizationServerConfig {
         );
 
         // 前后端分离，使用自定义的token
-        httpSecurity.csrf(csrf->csrf.disable());
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
 
         // 配置异常捕获
         httpSecurity.exceptionHandling(
                 exception -> exception.authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler)
         );
+
+        // 添加filter
+        httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         httpSecurity.authorizeHttpRequests(
                 authorize -> authorize.requestMatchers("/auth/**").anonymous()

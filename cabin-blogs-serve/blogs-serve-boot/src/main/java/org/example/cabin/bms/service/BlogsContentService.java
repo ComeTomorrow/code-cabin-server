@@ -2,6 +2,7 @@ package org.example.cabin.bms.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.example.cabin.bms.model.entity.Article;
+import org.example.cabin.bms.model.form.ArticleForm;
 import org.example.cabin.bms.model.query.ContentQuery;
 import org.example.cabin.bms.model.vo.ArticleVO;
 
@@ -15,4 +16,11 @@ public interface BlogsContentService {
      * @return
      */
     IPage<Article> getArticlesPaginateByUser(ContentQuery contentQuery);
+
+    /**
+     * 新增文章
+     * @param articleForm
+     * @return
+     */
+    int addArticle(ArticleForm articleForm);
 }
