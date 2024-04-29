@@ -6,6 +6,7 @@ import cn.hutool.json.JSONUtil;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.example.authentication.model.MemberUserDetails;
+import org.example.authentication.oauth2.extension.jwt.PasswordAuthenticationProvider;
 import org.example.authentication.service.MemberUserDetailsService;
 import org.example.common.security.filter.JwtAuthenticationTokenFilter;
 import org.example.common.security.handler.*;
@@ -108,27 +109,7 @@ public class AuthorizationServerConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        return new AuthenticationProvider() {
-            @Override
-            public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-                //从Authentication对象中获取用户名和身份凭证信息
-                String username = authentication.getName();
-                String password = authentication.getCredentials().toString();
-                UserDetails loginUser = userDetailsService.loadUserByUsername(username);
-                if (Objects.isNull(loginUser) || !passwordEncoder().matches(password, loginUser.getPassword())){
-                    //密码匹配失败抛出异常
-                    log.error("拒绝访问，用户名或密码错误");
-                    throw new BadCredentialsException("拒绝访问，用户名或密码错误");
-                }
-                log.info("访问成功："+loginUser);
-                return new UsernamePasswordAuthenticationToken(loginUser, password, loginUser.getAuthorities());
-            }
-
-            @Override
-            public boolean supports(Class<?> authentication) {
-                return authentication.equals(UsernamePasswordAuthenticationToken.class);
-            }
-        };
+        return new PasswordAuthenticationProvider();
     }
 
     /**

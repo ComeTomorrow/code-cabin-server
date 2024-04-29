@@ -1,5 +1,6 @@
 package org.example.authentication.controller;
 
+import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.example.authentication.model.MemberUserDetails;
@@ -13,8 +14,17 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +56,7 @@ public class AuthorizationController {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUser.getUsername(),loginUser.getPassword());
         Authentication authenticate = authenticationProvider.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authenticate);
+
         // 如果认证通过，使用userid生成一个jwt，jwt存入BaseResultVO返回
         MemberUserDetails principal = (MemberUserDetails)authenticate.getPrincipal();
 
@@ -59,7 +70,25 @@ public class AuthorizationController {
         payload.put(JwtClaimConstants.ACCOUNT_NON_LOCKED, principal.isAccountNonLocked());
         payload.put(JwtClaimConstants.CREDENTIALS_NON_EXPIRED, principal.isCredentialsNonExpired());
 
-        String token = JWTUtil.createToken(payload, JwtClaimConstants.JWT_KEY.getBytes());
+        ZoneId zoneId = ZoneId.systemDefault();
+
+        // 获取当前时间
+        LocalDateTime nowTime = LocalDateTime.now();
+        ZonedDateTime zonedNow = nowTime.atZone(zoneId);
+        Date nowDate = Date.from(zonedNow.toInstant());
+
+        // 获取60分钟之后
+        LocalDateTime expireTime = nowTime.plus(60 * 60, ChronoUnit.SECONDS);
+        ZonedDateTime zonedExpire = expireTime.atZone(zoneId);
+        Date expireDate = Date.from(zonedExpire.toInstant());
+
+        String token = JWT.create()
+                .addPayloads(payload)
+                .setIssuedAt(nowDate)
+                .setNotBefore(nowDate)
+                .setExpiresAt(expireDate)
+                .setKey(JwtClaimConstants.JWT_KEY.getBytes())
+                .sign();
 
         return Result.success(token);
     }

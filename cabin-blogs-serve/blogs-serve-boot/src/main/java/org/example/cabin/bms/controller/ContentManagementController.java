@@ -23,8 +23,6 @@ public class ContentManagementController {
 
     @GetMapping("/article/page")
     public PageResult<ArticleVO> getArticlesPage(ContentQuery query) {
-        System.out.println("username="+SecurityUtils.getUsername());
-        System.out.println("userId="+SecurityUtils.getUserId());
         query.setUserId(SecurityUtils.getUserId());
         IPage<Article> bos = contentService.getArticlesPaginateByUser(query);
         IPage<ArticleVO> vos = new Page<>();
@@ -48,8 +46,8 @@ public class ContentManagementController {
     }
 
 //    @Operation(summary= "新增文章")
-    @PutMapping("/article/add")
-    public Result<Integer> addArticle(ArticleForm form) {
+    @PutMapping("/article/save")
+    public Result<Integer> saveArticle(ArticleForm form) {
         int i = contentService.addArticle(form);
         if (i == 0) {
             return Result.failed("新增文章失败");

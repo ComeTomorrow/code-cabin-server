@@ -23,4 +23,11 @@ public interface BlogsContentService {
      * @return
      */
     int addArticle(ArticleForm articleForm);
+
+    /**
+     * 更新文章
+     * @param articleForm
+     * @return
+     */
+    int updateArticleById(ArticleForm articleForm);
 }

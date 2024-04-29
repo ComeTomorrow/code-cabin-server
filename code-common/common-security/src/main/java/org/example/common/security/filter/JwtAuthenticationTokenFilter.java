@@ -15,7 +15,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtException;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -35,20 +37,21 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
 
         JWT jwt = JWTUtil.parseToken(token);
-        JWTPayload payload = jwt.getPayload();
-
-        // 获取用户名（手机）
-        String username = (String)payload.getClaim(JwtClaimConstants.MOBILE);
         boolean verified = jwt.verify(JWTSignerUtil.hs256(JwtClaimConstants.JWT_KEY.getBytes()));
-
         if (!verified) {
             throw new JwtException("token 异常");
         }
 
-        // 构建UsernamePasswordAuthenticationToken,这里密码为null，是因为提供了正确的JWT,实现自动登录
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, null);
-        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        JWTPayload payload = jwt.getPayload();
+        // 获取用户信息
+        String mobile = (String)payload.getClaim(JwtClaimConstants.MOBILE);
 
+        //后期从redis中获取权限
+        //......
+
+        Jwt jwts = new Jwt(token,null,null,jwt.getHeaders().getRaw(),jwt.getPayloads().getRaw());
+        JwtAuthenticationToken authentication = new JwtAuthenticationToken(jwts,null, mobile);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }
 }
