@@ -6,18 +6,14 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.example.common.core.base.BaseEntity;
 
-/**
- * @author ComeTomorrow
- * @since 2024/4/25
- */
 @Data
-@TableName(value = "article_tag")
 @Accessors(chain = true)
-public class ArticleTag extends BaseEntity {
+@TableName(value = "relation_article_tag_article")
+public class ArticleTagArticle extends BaseEntity {
 
-    @TableField("name")
-    private String name;
+    @TableField(value = "article_tag_id")
+    private Long articleTagId;
 
-    @TableField("parent_id")
-    private Long parentId;
+    @TableField(value = "article_id")
+    private Long articleId;
 }

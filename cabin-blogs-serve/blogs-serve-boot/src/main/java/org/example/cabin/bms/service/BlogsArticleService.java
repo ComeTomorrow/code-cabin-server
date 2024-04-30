@@ -4,11 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.example.cabin.bms.model.entity.Article;
 import org.example.cabin.bms.model.form.ArticleForm;
 import org.example.cabin.bms.model.query.ContentQuery;
-import org.example.cabin.bms.model.vo.ArticleVO;
 
-import java.util.List;
-
-public interface BlogsContentService {
+public interface BlogsArticleService {
 
     /**
      * 根据用户id获得文章列表，并且将其分页
