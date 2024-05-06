@@ -1,0 +1,20 @@
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          # 开启以服务id去注册中心上获取转发地址
+          enabled: true
+      routes:
+      #### 路由id
+        - id: code-backend
+          ## 根据我们的服务名称查找地址是实现调用
+          #          uri: https://www.baidu.com/
+          # 修改uri 由于我们是从服务注册中心拿的服务名，所以可能是一个集群，所以用lb
+          uri: lb://code-backend
+          # 配置以下过滤，不然报错
+          filters:
+            - StripPrefix=1
+          ###匹配规则
+          predicates:
+            - Path=/backend/**

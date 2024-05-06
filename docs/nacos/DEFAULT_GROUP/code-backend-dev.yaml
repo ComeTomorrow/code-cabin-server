@@ -1,0 +1,5 @@
+security:
+  # 允许无需认证的路径列表
+  whitelist-paths:
+    # 获取系统用户的认证信息用于账号密码判读
+    - /api/v1/users/{username}/authInfo

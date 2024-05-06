@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: ${mariadb.driver-class-name} 
+    url: jdbc:mariadb://${mariadb.host}:${mariadb.port}/ums?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true
+    username: ${mariadb.username}
+    password: ${mariadb.password}
+  data:
+    redis:
+      database: ${redis.database}
+      host: ${redis.host}
+      port: ${redis.port}
+      # password: ${redis.password}
+      lettuce:
+        pool:
+          min-idle: 1
+  cache:
+    # 缓存类型 redis、none(不使用缓存) 
+    type: redis
+    # 缓存时间(单位：ms)
+    redis:
+      time-to-live: 3600000
+      # 缓存null值，防止缓存穿透
+      cache-null-values: true
+ 
+# feign:
+#   httpclient:
+#     enabled: true
+#   okhttp:
+#     enabled: false
+#   sentinel:  # 开启feign对sentinel的支持
+#     enabled: false 
+
+security:
+  whitelist-paths:
+    - /auth/login
