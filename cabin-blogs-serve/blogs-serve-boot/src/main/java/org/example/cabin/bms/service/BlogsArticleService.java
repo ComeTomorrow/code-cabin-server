@@ -19,7 +19,7 @@ public interface BlogsArticleService {
      * @param articleForm
      * @return
      */
-    int addArticle(ArticleForm articleForm);
+    Long addArticle(ArticleForm articleForm);
 
     /**
      * 更新文章
@@ -27,4 +27,11 @@ public interface BlogsArticleService {
      * @return
      */
     int updateArticleById(ArticleForm articleForm);
+
+    /**
+     * 更新文章
+     * @param id
+     * @return
+     */
+    Article getArticleById(Long id);
 }

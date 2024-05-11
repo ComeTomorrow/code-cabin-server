@@ -46,7 +46,7 @@ public class BlogsArticleServiceImpl implements BlogsArticleService {
 
     @Transactional
     @Override
-    public int addArticle(ArticleForm form){
+    public Long addArticle(ArticleForm form){
         Assert.isNull(form.getId(),"添加失败，文章已存在，禁止重复操作");
 
         // 获取登录用户id
@@ -56,7 +56,7 @@ public class BlogsArticleServiceImpl implements BlogsArticleService {
         Article article = new Article();
         BeanUtil.copyProperties(form, article);
         article.setUserId(userId);
-        int i = articleMapper.insert(article);
+        articleMapper.insert(article);
 
         try (SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH)) {
             // 判断标签是否存在
@@ -86,10 +86,9 @@ public class BlogsArticleServiceImpl implements BlogsArticleService {
                     columnArticleMapper.insert(relation);
                 }
             }
-
             sqlSession.commit(); // 批量提交
         }
-        return i;
+        return article.getId();
     }
 
     @Transactional
@@ -107,46 +106,54 @@ public class BlogsArticleServiceImpl implements BlogsArticleService {
         try (SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH)) {
             // 判断标签是否存在
             List<Long> tagIds = form.getTagIds();
-            List<ArticleTag> tags = articleTagMapper.selectBatchIds(tagIds);
-            // 批量插入文章与标签的关联关系数据
-            if (CollectionUtil.isNotEmpty(tags)){
-                ArticleTagArticleMapper articleTagArticleMapper = sqlSession.getMapper(ArticleTagArticleMapper.class);
-                List<ArticleTagArticle> relations = articleTagArticleMapper.selectList(
-                        Wrappers.lambdaQuery(ArticleTagArticle.class).eq(ArticleTagArticle::getArticleId,article.getId())
-                );
-                for (ArticleTagArticle relation : relations){
-                    articleTagArticleMapper.deleteById(relation);
-                }
-                for (ArticleTag tag : tags) {
-                    ArticleTagArticle relation = new ArticleTagArticle()
-                            .setArticleId(article.getId())
-                            .setArticleTagId(tag.getId());
-                    articleTagArticleMapper.insert(relation);
+            if (CollectionUtil.isNotEmpty(tagIds)){
+                List<ArticleTag> tags = articleTagMapper.selectBatchIds(tagIds);
+                // 批量插入文章与标签的关联关系数据
+                if (CollectionUtil.isNotEmpty(tags)){
+                    ArticleTagArticleMapper articleTagArticleMapper = sqlSession.getMapper(ArticleTagArticleMapper.class);
+                    List<ArticleTagArticle> relations = articleTagArticleMapper.selectList(
+                            Wrappers.lambdaQuery(ArticleTagArticle.class).eq(ArticleTagArticle::getArticleId,article.getId())
+                    );
+                    for (ArticleTagArticle relation : relations){
+                        articleTagArticleMapper.deleteById(relation);
+                    }
+                    for (ArticleTag tag : tags) {
+                        ArticleTagArticle relation = new ArticleTagArticle()
+                                .setArticleId(article.getId())
+                                .setArticleTagId(tag.getId());
+                        articleTagArticleMapper.insert(relation);
+                    }
                 }
             }
 
             // 判断专栏是否存在
             List<Long> columnIds = form.getColumnIds();
-            List<Column> columns = columnMapper.selectBatchIds(columnIds);
-            // 批量插入文章与栏目的关联关系数据
-            if (CollectionUtil.isNotEmpty(columns)){
-                ColumnArticleMapper columnArticleMapper = sqlSession.getMapper(ColumnArticleMapper.class);
-                List<ColumnArticle> relations = columnArticleMapper.selectList(
-                        Wrappers.lambdaQuery(ColumnArticle.class).eq(ColumnArticle::getArticleId,article.getId())
-                );
-                for (ColumnArticle relation : relations){
-                    columnArticleMapper.deleteById(relation);
-                }
-                for (Column column : columns) {
-                    ColumnArticle relation = new ColumnArticle()
-                            .setArticleId(article.getId())
-                            .setColumnId(column.getId());
-                    columnArticleMapper.insert(relation);
+            if (CollectionUtil.isNotEmpty(columnIds)){
+                List<Column> columns = columnMapper.selectBatchIds(columnIds);
+                // 批量插入文章与栏目的关联关系数据
+                if (CollectionUtil.isNotEmpty(columns)){
+                    ColumnArticleMapper columnArticleMapper = sqlSession.getMapper(ColumnArticleMapper.class);
+                    List<ColumnArticle> relations = columnArticleMapper.selectList(
+                            Wrappers.lambdaQuery(ColumnArticle.class).eq(ColumnArticle::getArticleId,article.getId())
+                    );
+                    for (ColumnArticle relation : relations){
+                        columnArticleMapper.deleteById(relation);
+                    }
+                    for (Column column : columns) {
+                        ColumnArticle relation = new ColumnArticle()
+                                .setArticleId(article.getId())
+                                .setColumnId(column.getId());
+                        columnArticleMapper.insert(relation);
+                    }
                 }
             }
-
             sqlSession.commit(); // 批量提交
         }
         return i;
+    }
+
+    @Override
+    public Article getArticleById(Long id) {
+        return articleMapper.selectById(id);
     }
 }

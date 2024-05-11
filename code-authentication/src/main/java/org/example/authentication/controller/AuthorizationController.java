@@ -4,6 +4,7 @@ import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.example.authentication.model.MemberUserDetails;
+import org.example.authentication.model.RegisterDetails;
 import org.example.authentication.service.MemberUserDetailsService;
 import org.example.cabin.ums.dto.MemberAuthDTO;
 import org.example.common.core.constant.JwtClaimConstants;
@@ -94,12 +95,12 @@ public class AuthorizationController {
     }
 
     @PutMapping("/register")
-    public Result<Integer> register(@RequestBody MemberUserDetails userDetails) {
+    public Result<Integer> register(@RequestBody RegisterDetails registerDetails) {
         MemberAuthDTO user = new MemberAuthDTO();
-        user.setUsername(userDetails.getUsername());
-        String encode = passwordEncoder.encode(userDetails.getPassword());
+        user.setUsername(registerDetails.getUsername());
+        String encode = passwordEncoder.encode(registerDetails.getPassword());
         user.setPassword(encode);
-        user.setEnabled(userDetails.isEnabled());
+        user.setEnabled(registerDetails.getEnabled());
 
         Integer i = userDetailsService.createUser(user);
         if (i==null) {

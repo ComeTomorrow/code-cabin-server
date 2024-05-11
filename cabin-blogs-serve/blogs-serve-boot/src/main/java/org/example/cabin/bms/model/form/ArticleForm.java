@@ -41,4 +41,5 @@ public class ArticleForm {
     private List<Long> tagIds;     // 标签id
 
     private List<Long> columnIds;  // 栏目id
+
 }

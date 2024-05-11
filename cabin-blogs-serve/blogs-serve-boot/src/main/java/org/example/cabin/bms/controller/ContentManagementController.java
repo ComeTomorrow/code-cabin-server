@@ -1,6 +1,7 @@
 package org.example.cabin.bms.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.example.cabin.bms.model.entity.Article;
@@ -25,23 +26,23 @@ public class ContentManagementController {
     public PageResult<ArticleVO> getArticlesPage(ContentQuery query) {
         query.setUserId(SecurityUtils.getUserId());
         IPage<Article> bos = articleService.getArticlesPaginateByUser(query);
-        IPage<ArticleVO> vos = new Page<>();
-        for (Article article : bos.getRecords()){
+        IPage<ArticleVO> vos = bos.convert(article -> {
             ArticleVO vo = new ArticleVO();
             BeanUtil.copyProperties(article, vo);
-            vos.getRecords().add(vo);
-        }
+            return vo;
+        });
         return PageResult.success(vos);
     }
 
 //    @Operation(summary= "新增文章")
     @PostMapping("/article/save")
-    public Result<Integer> saveArticle(@RequestBody ArticleForm form) {
-        int i = articleService.addArticle(form);
-        if (i == 0) {
-            return Result.failed("新增文章失败");
+    public Result<Long> saveArticle(@RequestBody ArticleForm form) {
+        if (ObjectUtil.isNull(form.getId())){
+            Long id = articleService.addArticle(form);
+            return Result.success("保存草稿成功", id);
         }else {
-            return Result.success("新增文章成功", i);
+            articleService.updateArticleById(form);
+            return Result.success("保存草稿成功", form.getId());
         }
     }
 
@@ -55,4 +56,11 @@ public class ContentManagementController {
         }
     }
 
+    @GetMapping("/article/{id}")
+    public Result<ArticleVO> getArticleById(@PathVariable("id") Long id){
+        Article article = articleService.getArticleById(id);
+        ArticleVO articleVO = new ArticleVO();
+        BeanUtil.copyProperties(article, articleVO);
+        return Result.success("更新文章成功", articleVO);
+    }
 }
