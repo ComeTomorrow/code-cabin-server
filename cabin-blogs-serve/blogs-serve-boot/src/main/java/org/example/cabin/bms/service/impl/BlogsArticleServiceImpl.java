@@ -40,7 +40,11 @@ public class BlogsArticleServiceImpl implements BlogsArticleService {
     public IPage<Article> getArticlesPaginateByUser(ContentQuery query) {
         IPage page = query.startPage();
         IPage<Article> articles = articleMapper.selectPage(page, Wrappers.lambdaQuery(Article.class)
-                .eq(Article::getUserId, query.getUserId()));
+                .eq(Article::getUserId, query.getUserId())
+                .select(Article::getTitle, Article::getUserId, Article::getSubtitle, Article::getSummary, Article::getCoverAddress,
+                        Article::getType, Article::getOriginalLink, Article::getReadType, Article::getStatus, Article::getHits,
+                        Article::getSource, Article::getAuthorizedStatus, Article::getId)
+        );
         return articles;
     }
 
