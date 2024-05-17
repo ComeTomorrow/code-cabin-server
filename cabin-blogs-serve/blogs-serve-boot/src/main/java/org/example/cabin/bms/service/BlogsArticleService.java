@@ -34,4 +34,11 @@ public interface BlogsArticleService {
      * @return
      */
     Article getArticleById(Long id);
+
+    /**
+     * 更新文章
+     * @param id
+     * @return
+     */
+    int deleteArticleById(Long id);
 }

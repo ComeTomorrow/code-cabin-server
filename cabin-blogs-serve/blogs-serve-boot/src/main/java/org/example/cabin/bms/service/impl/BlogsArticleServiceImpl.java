@@ -2,8 +2,10 @@ package org.example.cabin.bms.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import lombok.val;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -31,7 +33,13 @@ public class BlogsArticleServiceImpl implements BlogsArticleService {
     private ArticleTagMapper articleTagMapper;
 
     @Autowired
+    private ArticleTagArticleMapper articleTagArticleMapper;
+
+    @Autowired
     private ColumnMapper columnMapper;
+
+    @Autowired
+    private ColumnArticleMapper columnArticleMapper;
 
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
@@ -159,5 +167,17 @@ public class BlogsArticleServiceImpl implements BlogsArticleService {
     @Override
     public Article getArticleById(Long id) {
         return articleMapper.selectById(id);
+    }
+
+    @Transactional
+    @Override
+    public int deleteArticleById(Long id) {
+        Article article = articleMapper.selectById(id);
+        if (ObjectUtil.isNull(article)){
+            return 0;
+        }
+        articleTagArticleMapper.delete(Wrappers.lambdaUpdate(ArticleTagArticle.class).eq(ArticleTagArticle::getArticleId, id));
+        columnArticleMapper.delete(Wrappers.lambdaUpdate(ColumnArticle.class).eq(ColumnArticle::getArticleId, id));
+        return articleMapper.deleteById(id);
     }
 }

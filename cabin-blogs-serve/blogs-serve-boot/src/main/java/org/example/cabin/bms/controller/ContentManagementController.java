@@ -52,7 +52,7 @@ public class ContentManagementController {
         if (i == 0) {
             return Result.failed("更新文章失败");
         }else {
-            return Result.success("更新文章失败", i);
+            return Result.success("更新文章成功", i);
         }
     }
 
@@ -61,6 +61,16 @@ public class ContentManagementController {
         Article article = articleService.getArticleById(id);
         ArticleVO articleVO = new ArticleVO();
         BeanUtil.copyProperties(article, articleVO);
-        return Result.success("更新文章成功", articleVO);
+        return Result.success("获取文章成功", articleVO);
+    }
+
+    @DeleteMapping("/article/delete/{id}")
+    public Result<Integer> deleteArticle(@PathVariable("id") Long id) {
+        int i = articleService.deleteArticleById(id);
+        if (i == 0) {
+            return Result.failed("文章已被删除，无需再删");
+        }else {
+            return Result.success("删除文章成功", i);
+        }
     }
 }
