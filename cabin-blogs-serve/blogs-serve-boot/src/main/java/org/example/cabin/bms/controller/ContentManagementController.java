@@ -13,6 +13,7 @@ import org.example.common.core.result.PageResult;
 import org.example.common.core.result.Result;
 import org.example.common.security.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,7 +37,7 @@ public class ContentManagementController {
 
 //    @Operation(summary= "新增文章")
     @PostMapping("/article/save")
-    public Result<Long> saveArticle(@RequestBody ArticleForm form) {
+    public Result<Long> saveArticle(@Validated @RequestBody ArticleForm form) {
         if (ObjectUtil.isNull(form.getId())){
             Long id = articleService.addArticle(form);
             return Result.success("保存草稿成功", id);

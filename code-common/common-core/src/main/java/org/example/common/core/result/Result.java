@@ -1,5 +1,6 @@
 package org.example.common.core.result;
 
+import cn.hutool.core.util.StrUtil;
 import lombok.Data;
 import org.example.common.core.enums.ResultCode;
 
@@ -42,6 +43,10 @@ public class Result<T> implements Serializable {
 
     public static <T> Result<T> failed() {
         return result(ResultCode.SYSTEM_EXECUTION_ERROR.getCode(), ResultCode.SYSTEM_EXECUTION_ERROR.getMsg(), null);
+    }
+
+    public static <T> Result<T> failed(IResultCode resultCode, String msg) {
+        return result(resultCode.getCode(), StrUtil.isBlank(msg)?msg:resultCode.getMsg(), null);
     }
 
      public static <T> Result<T> failed(String msg) {

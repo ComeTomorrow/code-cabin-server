@@ -1,2 +1,3 @@
 org.example.common.web.configure.WebMvcConfig
 org.example.common.web.aspect.DuplicateSubmitAspect
+org.example.common.web.exception.GlobalExceptionHandler

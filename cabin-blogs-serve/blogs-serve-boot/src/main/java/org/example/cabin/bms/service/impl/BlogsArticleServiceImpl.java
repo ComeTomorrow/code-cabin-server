@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Objects;
@@ -58,7 +59,7 @@ public class BlogsArticleServiceImpl implements BlogsArticleService {
 
     @Transactional
     @Override
-    public Long addArticle(ArticleForm form){
+    public Long addArticle(@Validated ArticleForm form){
         Assert.isNull(form.getId(),"添加失败，文章已存在，禁止重复操作");
 
         // 获取登录用户id
