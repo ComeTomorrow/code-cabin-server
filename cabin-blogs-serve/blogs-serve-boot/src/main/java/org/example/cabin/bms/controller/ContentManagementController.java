@@ -57,7 +57,7 @@ public class ContentManagementController {
         }
     }
 
-    @GetMapping("/article/{id}")
+    @GetMapping("/article/get/{id}")
     public Result<ArticleVO> getArticleById(@PathVariable("id") Long id){
         Article article = articleService.getArticleById(id);
         ArticleVO articleVO = new ArticleVO();
