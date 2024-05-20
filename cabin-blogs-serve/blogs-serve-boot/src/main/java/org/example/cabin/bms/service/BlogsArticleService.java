@@ -33,7 +33,7 @@ public interface BlogsArticleService {
      * @param id
      * @return
      */
-    Article getArticleById(Long id);
+    Article getArticleContentById(Long id);
 
     /**
      * 更新文章

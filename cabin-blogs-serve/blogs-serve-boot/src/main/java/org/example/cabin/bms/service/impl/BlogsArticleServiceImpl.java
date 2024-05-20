@@ -166,7 +166,7 @@ public class BlogsArticleServiceImpl implements BlogsArticleService {
     }
 
     @Override
-    public Article getArticleById(Long id) {
+    public Article getArticleContentById(Long id) {
         return articleMapper.selectById(id);
     }
 

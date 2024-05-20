@@ -59,7 +59,7 @@ public class ContentManagementController {
 
     @GetMapping("/article/get/{id}")
     public Result<ArticleVO> getArticleById(@PathVariable("id") Long id){
-        Article article = articleService.getArticleById(id);
+        Article article = articleService.getArticleContentById(id);
         ArticleVO articleVO = new ArticleVO();
         BeanUtil.copyProperties(article, articleVO);
         return Result.success("获取文章成功", articleVO);
