@@ -36,7 +36,18 @@ public class ContentManagementController {
     }
 
 //    @Operation(summary= "新增文章")
-    @PostMapping("/article/save")
+    @PutMapping("/article/draft")
+    public Result<Long> saveDraft(@Validated @RequestBody ArticleForm form) {
+        if (ObjectUtil.isNull(form.getId())){
+            Long id = articleService.addArticle(form);
+            return Result.success("保存草稿成功", id);
+        }else {
+            articleService.updateArticleById(form);
+            return Result.success("保存草稿成功", form.getId());
+        }
+    }
+
+    @PutMapping("/article/save")
     public Result<Long> saveArticle(@Validated @RequestBody ArticleForm form) {
         if (ObjectUtil.isNull(form.getId())){
             Long id = articleService.addArticle(form);
